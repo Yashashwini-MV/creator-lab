@@ -1,0 +1,12 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {spawn} from 'node:child_process';import {readFileSync} from 'node:fs';
+import {callAI,parseAndValidate,AIError} from '../../server/services/ai.js';
+const fake=t=>({models:{generateContent:async()=>({text:t})}});
+test('valid JSON passes',async()=>{const r=await callAI('coach',{},'q',fake('{"answer":"ok"}'));assert.equal(r.answer,'ok')});
+test('malformed text rejected',async()=>{await assert.rejects(()=>callAI('coach',{},'q',fake('not json')),e=>e instanceof AIError&&e.code==='MALFORMED')});
+test('missing keys rejected',()=>{assert.throws(()=>parseAndValidate('analyze-performance','{"observed":[]}'),{code:'MALFORMED'})});
+test('provider failure maps to AIError',async()=>{const c={models:{generateContent:async()=>{throw Object.assign(new Error('x'),{status:429})}}};await assert.rejects(()=>callAI('coach',{},'q',c),{code:'PROVIDER_429'})});
+test('no key and no client -> NO_KEY',async()=>{const k=process.env.AI_API_KEY;delete process.env.AI_API_KEY;await assert.rejects(()=>callAI('coach',{},'q'),{code:'NO_KEY'});if(k)process.env.AI_API_KEY=k});
+const run=async(env,port)=>{const p=spawn('node',['server/index.js'],{env:{PATH:process.env.PATH,PORT:port,ENV_FILE:'/nonexistent',...env}});let log='';p.stdout.on('data',d=>log+=d);p.stderr.on('data',d=>log+=d);await new Promise(r=>setTimeout(r,800));return{p,log:()=>log}};
+test('status false without key; coach falls back; key-free',async()=>{const s=await run({},3401);try{assert.deepEqual(await(await fetch('http://localhost:3401/api/status')).json(),{ai:false});const r=await fetch('http://localhost:3401/api/ai/coach',{method:'POST',body:'{"context":{},"question":"hi"}'});assert.equal(r.status,503)}finally{s.p.kill()}});
+test('status true with key; key never in responses or logs',async()=>{const KEY='test-secret-key-123';const s=await run({AI_API_KEY:KEY},3402);try{const st=await(await fetch('http://localhost:3402/api/status')).text();assert.equal(JSON.parse(st).ai,true);const r=await fetch('http://localhost:3402/api/ai/coach',{method:'POST',body:'{"context":{},"question":"hi"}'});const body=await r.text();assert.ok(r.status>=500);assert.ok(!body.includes(KEY)&&!st.includes(KEY)&&!s.log().includes(KEY))}finally{s.p.kill()}});
+test('key not in frontend',()=>{assert.ok(!/AI_API_KEY|AIza/.test(readFileSync('creator-lab.html','utf8')))});

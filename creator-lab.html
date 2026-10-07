@@ -1,0 +1,817 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Creator Lab</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FBF3E6;--ink:#2B2522;--mut:#7A6A60;--pri:#B8325A;--acc:#F4D35E;--ok:#5E8B4A;--warn:#E4694F;--line:#E6D8C3;--soft:#F3E4CC;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root[data-t=sun]{--bg:#FFF6DC;--pri:#8A5A2B;--acc:#F2C230;--soft:#F7E6B0}
+:root[data-t=garden]{--bg:#F6F4E6;--pri:#4F7A3A;--acc:#CFE0A8;--soft:#E4EBCB}
+:root[data-t=terracotta]{--bg:#F6EADB;--pri:#B5573A;--acc:#D9B25F;--soft:#EBD5B8}
+:root[data-t=cherry]{--bg:#FCEBEC;--pri:#9E1B3F;--acc:#F7C6CE;--soft:#F6D7DB}
+*{box-sizing:inherit}html,body{height:auto}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 'Instrument Sans',sans-serif;transition:background .5s}
+h1,h2,h3{font-family:'Young Serif',serif;font-weight:400;line-height:1.1;margin:0}h1{font-size:clamp(2.4rem,7vw,4.6rem)}h2{font-size:clamp(1.6rem,4vw,2.4rem)}h3{font-size:1.25rem}
+p{margin:.4rem 0}.mut{color:var(--mut)}.small{font-size:.85rem}
+button,input,select,textarea{font:inherit;color:inherit}
+.btn{background:var(--pri);color:#fff;border:0;padding:.7rem 1.2rem;border-radius:4px;cursor:pointer;transition:transform .15s,opacity .2s}.btn:hover{transform:translateY(-1px)}.btn:active{transform:scale(.97)}.btn:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.btn.alt{background:none;color:var(--ink);border:1.5px solid var(--ink)}.btn.sm{padding:.4rem .8rem;font-size:.85rem}
+input,select,textarea{width:100%;padding:.65rem .8rem;border:1.5px solid var(--line);background:#fff;border-radius:4px;margin:.25rem 0 .8rem}
+label{font-size:.85rem;color:var(--mut)}
+.wrap{max-width:1080px;margin:0 auto;padding:1.2rem}
+nav.top{display:flex;gap:.2rem;overflow-x:auto;border-bottom:1.5px solid var(--ink);padding:.6rem 1.2rem;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5;align-items:center}
+nav.top b{font-family:'Young Serif';margin-right:1rem;color:var(--pri);white-space:nowrap}
+nav.top a{padding:.35rem .8rem;color:var(--ink);text-decoration:none;white-space:nowrap;border-radius:99px;font-size:.95rem}nav.top a.on{background:var(--ink);color:var(--bg)}
+.hero{display:grid;grid-template-columns:1.3fr 1fr;gap:2rem;align-items:center;min-height:80vh}
+.collage{position:relative;height:380px}.collage div{position:absolute;border-radius:6px;padding:1rem;font-family:'Young Serif';box-shadow:6px 6px 0 var(--ink);border:1.5px solid var(--ink)}
+.split{display:grid;grid-template-columns:1.6fr 1fr;gap:2.5rem}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+.know{border-top:5px solid var(--ok)}.susp{border-top:5px solid var(--acc)}.unk{border-top:5px solid var(--warn)}
+.col{padding-top:.8rem}.col li{margin:.5rem 0}ul{padding-left:1.1rem}
+.thumb{aspect-ratio:9/12;border-radius:6px;display:flex;align-items:flex-end;padding:.8rem;font-family:'Young Serif';color:#fff;font-size:1.05rem;border:1.5px solid var(--ink)}
+.strip{display:flex;gap:1rem;overflow-x:auto;padding:.4rem .2rem 1rem}.strip>*{min-width:200px;flex:0 0 200px}
+.row{display:flex;justify-content:space-between;gap:1rem;align-items:baseline;border-bottom:1px solid var(--line);padding:.7rem 0;flex-wrap:wrap}
+.tag{display:inline-block;padding:.1rem .6rem;border-radius:99px;font-size:.78rem;background:var(--soft)}.tag.g{background:#D7E8C8}.tag.y{background:var(--acc)}.tag.r{background:#F7D0C6}
+.big{font-family:'Young Serif';font-size:2.2rem;color:var(--pri)}
+.paper{background:#fff;border:1.5px solid var(--ink);padding:1.4rem;border-radius:4px}.hl{background:var(--soft);padding:1rem 1.2rem;border-left:5px solid var(--pri)}
+.bar{height:8px;background:var(--line);border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:var(--pri);transition:width 1s}
+.modal{position:fixed;inset:0;background:#2b252299;display:grid;place-items:center;z-index:20;padding:1rem;animation:f .2s}.modal>div{background:var(--bg);max-width:680px;width:100%;max-height:88vh;overflow:auto;padding:1.5rem;border-radius:6px;border:1.5px solid var(--ink);animation:u .25s}
+@keyframes f{from{opacity:0}}@keyframes u{from{transform:translateY(14px);opacity:0}}
+.toast{position:fixed;bottom:calc(1rem + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:.7rem 1.2rem;border-radius:4px;z-index:30;animation:u .25s}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}.chip{padding:.5rem 1rem;border:1.5px solid var(--ink);background:none;border-radius:99px;cursor:pointer}.chip.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.step{display:flex;gap:.8rem;padding:.3rem 0;color:var(--mut)}.step.done{color:var(--ink)}
+.tl{display:flex;gap:.3rem;flex-wrap:wrap}.tl span{padding:.2rem .7rem;font-size:.8rem;background:var(--line);border-radius:3px}.tl span.on{background:var(--ok);color:#fff}
+@media(max-width:760px){.hero,.split,.three{grid-template-columns:1fr}.collage{height:300px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.three>.col{animation:u .5s both}.three>.col:nth-child(2){animation-delay:.25s}.three>.col:nth-child(3){animation-delay:.5s}
+.onb{max-width:780px;margin:0 auto;padding:2.2rem 1.2rem 5rem;min-height:90vh}
+.onb .brand{font-family:'Young Serif';color:var(--pri);font-size:1.05rem;margin:0}
+.onb .lab{display:block;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--mut);margin:1.7rem 0 .5rem}
+.onb h1{margin:.2rem 0 .7rem}
+.onb .lede{font-size:1.12rem;color:var(--mut);max-width:34rem;margin-bottom:2rem}
+.sp3{display:grid;gap:1.1rem}
+.spcard{position:relative;display:block;width:100%;text-align:left;background:#fff;border:1.5px solid var(--ink);border-radius:6px;padding:1.25rem 1.35rem 1.15rem 1.55rem;cursor:pointer;transition:transform .18s,box-shadow .18s;animation:u .5s both}
+.spcard:nth-child(2){animation-delay:.1s}.spcard:nth-child(3){animation-delay:.2s}
+.spcard::before{content:'';position:absolute;left:0;top:0;bottom:0;width:7px;background:var(--pri);border-radius:6px 0 0 6px}
+.spcard.b::before{background:var(--acc)}.spcard.s::before{background:var(--ok)}.spcard.e::before{background:var(--warn)}
+.spcard:hover{transform:translate(-2px,-3px);box-shadow:5px 6px 0 var(--ink)}
+.spcard:active{transform:translate(0,0);box-shadow:2px 2px 0 var(--ink)}
+.spcard .num{font-family:'Young Serif';font-size:.9rem;color:var(--mut);letter-spacing:.1em}
+.spcard h3{margin:.3rem 0 .35rem}
+.spcard p{color:var(--mut);margin:0 0 .7rem;max-width:34rem}
+.spcard .go{font-size:.9rem;font-weight:600;color:var(--pri)}
+.qlist{display:grid;gap:.6rem;margin:1.6rem 0 1.3rem}
+.qopt{display:flex;gap:.75rem;align-items:center;width:100%;text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:6px;padding:.9rem 1.05rem;cursor:pointer;transition:transform .15s,border-color .15s;animation:u .45s both}
+.qopt:nth-child(2){animation-delay:.05s}.qopt:nth-child(3){animation-delay:.1s}.qopt:nth-child(4){animation-delay:.15s}.qopt:nth-child(5){animation-delay:.2s}
+.qopt:hover{border-color:var(--ink);transform:translateX(4px)}
+.qopt.on{border-color:var(--pri);box-shadow:inset 0 0 0 1.5px var(--pri)}
+.qopt .dot{width:14px;height:14px;border-radius:50%;border:1.5px solid var(--mut);flex:0 0 auto}
+.qopt.on .dot{background:var(--pri);border-color:var(--pri)}
+.pickbar{display:flex;gap:.7rem;flex-wrap:wrap;align-items:center}
+.simlist{list-style:none;padding:0;margin:1.5rem 0}
+.simlist li{display:flex;gap:.7rem;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--line);color:var(--mut);animation:u .4s both}
+.simlist li.done{color:var(--ink)}
+.simlist .mk{width:1.3rem;color:var(--ok);font-weight:700}
+.pchip{display:inline-block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;border:1.5px solid var(--ink);border-radius:99px;padding:.2rem .7rem;background:var(--acc)}
+.selrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.1rem 1.5rem;margin:1.4rem 0}
+.selrow p{font-family:'Young Serif';font-size:1.25rem;margin:.15rem 0}
+.evid{display:grid;gap:.9rem;margin:1.5rem 0}
+.evid .box{border:1.5px solid var(--line);background:#fff;border-radius:6px;padding:.9rem 1.05rem}
+.evid .box b{display:block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);margin-bottom:.25rem}
+.evid .obs{border-top:5px solid var(--ok)}.evid .lik{border-top:5px solid var(--acc)}.evid .unk{border-top:5px solid var(--warn)}.evid .nxt{border-top:5px solid var(--pri)}
+.flab{display:block;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);margin-bottom:.2rem}
+.rev{animation:u .55s both}
+@keyframes febar{0%{width:6%}55%{width:64%}100%{width:86%}}
+.febar i{animation:febar 7s ease-out forwards}
+.idea{padding:1.5rem 0 1.7rem;border-top:1.5px solid var(--ink)}
+.idea.alt{margin-left:clamp(0px,5vw,4.5rem)}
+.idea h3{font-size:clamp(1.35rem,3vw,2.1rem);margin:.55rem 0 .25rem}
+.idea .hook{font-family:'Young Serif';color:var(--pri);margin:.15rem 0 .9rem}
+.idea-top{display:flex;gap:.7rem;align-items:center;flex-wrap:wrap}
+.idea .evid{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.evid .ang{border-top:5px solid var(--pri)}.evid .nov{border-top:5px solid var(--line)}
+.studio .ideaint{background:var(--soft);border-left:5px solid var(--acc);padding:1rem 1.2rem;margin:1.5rem 0;max-width:46rem}
+.studio .idea-note{border-left-color:var(--ink)}
+@media(max-width:760px){.idea.alt{margin-left:0}}</style></head><body><div id="app"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const K='creatorlab_v1',TH=['rose','sun','garden','terracotta','cherry'],COL=['#B8325A','#5E8B4A','#E4694F','#8A5A2B'];
+let supa=null;
+let authReady=false;
+
+async function initSupabase(){
+  try{
+    const r=await fetch('/api/config');
+    const cfg=await r.json();
+
+    if(!cfg.supabaseUrl||!cfg.supabasePublishableKey){
+      console.error('Supabase configuration is missing.');
+      exitUser();
+      authReady=true;
+      render();
+      return;
+    }
+
+    supa=window.supabase.createClient(
+      cfg.supabaseUrl,
+      cfg.supabasePublishableKey
+    );
+
+    supa.auth.onAuthStateChange((event,session)=>{
+      const u=session&&session.user;
+      if(u){
+        ensureUser(u).then(()=>{if(authReady)render()});
+      }else{
+        exitUser();
+        if(authReady)render();
+      }
+    });
+
+    const {data:{session}}=await supa.auth.getSession();
+
+    if(session&&session.user){
+      await ensureUser(session.user);
+    }else{
+      exitUser();
+    }
+
+    authReady=true;
+    render();
+  }catch(err){
+    console.error('Supabase initialization failed:',err);
+    exitUser();
+    authReady=true;
+    render();
+  }
+}
+
+async function loadExperiments(){
+  if(!supa||!S.me)return;
+  try{
+    const {data,error}=await supa.from('experiments').select('*').eq('user_id',S.me).order('created_at',{ascending:false});
+    if(error){console.error('Experiments load failed:',error);return}
+    if(!Array.isArray(data)||!data.length)return;
+    const real=data.map(r=>({id:r.id,title:r.title,topic:r.topic,sub:r.subtopic,aud:r.audience,format:r.format,hook:r.hook,hyp:r.hypothesis,variable:r.variable,goal:r.goal,views:r.views,likes:r.likes,comments:r.comments,saves:r.saves,shares:r.shares,gained:r.followers_gained,date:r.date,status:r.status,an:r.ai_analysis}));
+    const proto=S.exps.filter(e=>e&&e.src==='proto');
+    S.exps=proto.concat(real);
+    render();
+  }catch(err){console.error('Experiments load failed:',err)}
+}
+
+async function saveNewExperiment(e){
+  if(!supa||!S.me){toast('Experiment saved. Your next learning loop starts here.');return}
+  try{
+    const {data,error}=await supa.from('experiments').insert({user_id:S.me,title:e.title,topic:e.topic,subtopic:e.sub,audience:e.aud,format:e.format,hook:e.hook,hypothesis:e.hyp,variable:e.variable,goal:e.goal,views:e.views,likes:e.likes,comments:e.comments,saves:e.saves,shares:e.shares,followers_gained:e.gained,date:e.date,status:e.status,ai_analysis:e.an}).select().single();
+    if(error)throw error;
+    if(data&&data.id)e.id=data.id;
+    save();
+    toast('Experiment saved. Your next learning loop starts here.');
+  }catch(err){console.error('Experiment save failed:',err);toast('We couldn\'t save this experiment. Please try again.')}
+}
+
+async function saveExperimentResults(e){
+  const localOnly=!e||!Number.isSafeInteger(e.id)||e.id<1||e.id>=1e12;
+  if(!supa||!S.me||localOnly){toast('Results saved.');return}
+  try{
+    const {error}=await supa.from('experiments').update({views:e.views,likes:e.likes,comments:e.comments,saves:e.saves,shares:e.shares,followers_gained:e.gained,status:e.status,updated_at:new Date().toISOString()}).eq('id',e.id).eq('user_id',S.me);
+    if(error)throw error;
+    toast('Results saved.');
+  }catch(err){console.error('Experiment results save failed:',err);toast('We couldn\'t save these results. Please try again.')}
+}
+
+async function saveExperimentAnalysis(e){
+  const localOnly=!e||!Number.isSafeInteger(e.id)||e.id<1||e.id>=1e12;
+  if(!supa||!S.me||localOnly)return;
+  try{
+    const {error}=await supa.from('experiments').update({ai_analysis:e.an,updated_at:new Date().toISOString()}).eq('id',e.id).eq('user_id',S.me);
+    if(error)throw error;
+  }catch(err){console.error('Experiment analysis save failed:',err);toast('We couldn\'t save this analysis. Please try again.')}
+}
+
+const seed=()=>({users:[],me:null,theme:'rose',modal:null,
+creator:{name:'Maya',niche:'Fashion & Style',audience:'College students 18–24',platform:'Instagram',stage:'Growing',followers:12480,goal:'Grow my audience'},
+exps:[],
+collabs:[{id:1,name:'Riya (makeup)',overlap:68,idea:'College-ready look under ₹1,000',why:'Her audience overlaps strongly with yours among college-aged viewers, and makeup complements your fashion niche.',status:null},{id:2,name:'Arjun (thrift reviews)',overlap:54,idea:'Thrift vs high street: one budget',why:'Budget-conscious viewers; your budget framing is your best-evidenced pattern.',status:null}],
+opps:[{id:1,brand:'Campus-wear label (fashion)',camp:'Back-to-campus capsule',cat:'Fashion',deliv:'1 Reel + 3 Stories',pay:'₹15,000–25,000 (brand-stated)',due:'2026-11-15',match:92,reqs:['Short-form video','College audience','Affordable fashion'],stat:null},{id:2,brand:'Student budget app (finance)',camp:'Spend-smart semester',cat:'Finance',deliv:'1 Reel',pay:'₹10,000 (brand-stated)',due:'2026-11-30',match:58,reqs:['College audience','Budget content'],stat:null},{id:3,brand:'Skincare brand (beauty)',camp:'5-minute routine',cat:'Beauty',deliv:'1 Reel',pay:'Product + ₹8,000',due:'2026-12-05',match:41,reqs:['Beauty niche proof'],stat:null}],
+proofs:[],ob:0,obd:{}});
+let S=JSON.parse(localStorage.getItem(K)||'null')||seed();if(!S.creator)S=seed();
+S.me=null;
+let sKey=K;
+const stateKey=id=>id?K+':'+id:K;
+const save=()=>{try{localStorage.setItem(sKey,JSON.stringify(S))}catch(_){}};
+function cleanCreator(name){return{name:name||'',niche:'',audience:'',platform:'',stage:'',followers:0,goal:''}}
+function bindUser(user){
+  const id=user&&user.id;
+  if(sKey===stateKey(id)&&S.me===id)return;
+  const th=S.theme;
+  sKey=stateKey(id);
+  let st=null;
+  if(id){try{st=JSON.parse(localStorage.getItem(sKey)||'null')}catch(_){st=null}}
+  S=(st&&st.creator)?st:seed();
+  S.theme=th||(st&&st.theme)||'rose';
+  S.me=id||null;
+  S.modal=null;
+  S.creator=cleanCreator(user&&user.user_metadata&&user.user_metadata.display_name);
+  S.prof=false;S.onbDone=false;S.exps=[];
+  S.ob=0;S.obOn=1;S.obd={};S.sp=null;S.osp=null;S.oc=0;
+  chat=[];onbSkip=0;
+  save();
+}
+function resetProfileState(user){
+  S.creator=cleanCreator(user&&user.user_metadata&&user.user_metadata.display_name);
+  S.prof=false;S.onbDone=false;S.exps=[];
+  S.ob=0;S.obOn=1;S.obd={};S.sp=null;S.osp=null;S.oc=0;
+  onbSkip=0;
+  save();
+}
+function applyProfile(profile,user){
+  S.creator={
+    name:profile.display_name||(user&&user.user_metadata&&user.user_metadata.display_name)||'',
+    niche:profile.niche||'',
+    audience:profile.audience||'',
+    platform:profile.platform||'',
+    stage:profile.creator_stage||'',
+    followers:profile.followers||0,
+    goal:profile.primary_goal||''
+  };
+  S.prof=true;
+  S.onbDone=profile.onboarding_completed===true;
+  S.ob=S.onbDone?5:0;
+  S.obOn=S.onbDone?0:1;
+  S.obd={};S.sp=null;S.osp=null;S.oc=0;
+  onbSkip=0;
+  save();
+  if(S.onbDone)clearOnbDraft(user&&user.id);
+}
+function exitUser(){
+  const th=S.theme;
+  sKey=K;
+  S=seed();
+  S.theme=th||'rose';
+  S.me=null;
+  S.modal=null;
+  S.creator=cleanCreator();
+  S.prof=false;S.onbDone=false;S.exps=[];S.proofs=[];
+  S.ob=0;S.obOn=0;S.obd={};S.sp=null;S.osp=null;S.oc=0;
+  chat=[];onbSkip=0;
+  userLoad=null;
+  save();
+}
+const draftKey=id=>id?'creator_lab_onboarding_draft_'+id:null;
+function readOnbDraft(id){if(!id)return null;try{const d=JSON.parse(localStorage.getItem(draftKey(id))||'null');return d&&d.v===1?d:null}catch(_){return null}}
+function saveOnbDraft(){if(!S.me||S.onbDone)return;const od=S.obd||{};if(!S.sp&&!Object.keys(od).length)return;try{localStorage.setItem(draftKey(S.me),JSON.stringify({v:1,sp:S.sp||null,osp:S.osp||null,ob:Number.isInteger(S.ob)?S.ob:0,obd:od,oc:Number.isInteger(S.oc)?S.oc:0,obOn:S.obOn?1:0,savedAt:Date.now()}))}catch(_){}}
+function clearOnbDraft(id){const k=draftKey(id||S.me);if(k){try{localStorage.removeItem(k)}catch(_){}}}
+function restoreOnbDraft(id){
+  if(!id||S.me!==id||S.onbDone)return false;
+  const d=readOnbDraft(id);if(!d)return false;
+  S.sp=d.sp||null;S.osp=d.osp||null;S.ob=Number.isInteger(d.ob)?d.ob:0;
+  S.obd=(d.obd&&typeof d.obd==='object')?d.obd:{};
+  S.oc=Number.isInteger(d.oc)?d.oc:0;S.obOn=1;onbSkip=0;
+  return true;
+}
+const PROTO_TOPICS={'Fashion & Style':['Outfits','Thrift & budget','Styling hacks','Seasonal trends','Hauls','Occasion looks'],Beauty:['Skincare','Everyday makeup','Routine','Product reviews','Trends','Beginner looks'],Fitness:['Home workouts','Nutrition','Beginner form','Progress logs','Recovery','Routines'],Food:['Quick recipes','Meal prep','Budget cooking','Taste tests','Techniques','Kitchen gear'],Travel:['Itineraries','Budget travel','Packing','City guides','Food spots','Travel tips'],Gaming:['Walkthroughs','Setups','Game reviews','Tips & tricks','Streams','Challenges'],Education:['Study methods','Explainers','Career advice','Tools','Tutorials','Common mistakes'],Lifestyle:['Routines','Productivity','Home & space','Habits','Day in my life','Advice'],Tech:['Reviews','Setups','Tips & tricks','Comparisons','Apps','News & trends'],Comedy:['Sketches','Relatable','Characters','Trends','Duets','Story time'],Art:['Process videos','Tutorials','Tools','Sketches','Tips','Showcase']};
+const topicsFor=n=>PROTO_TOPICS[n]||['Basics','Tips','Trends','Mistakes','Routine','Showcase'];
+const PROTO_FMT={Instagram:['Reel','Carousel','Story series'],TikTok:['Video','Photo post','Live clip'],YouTube:['Short','Long video','Community post'],LinkedIn:['Text post','Document post','Video'],X:['Thread','Short video','Quote post']};
+const fmtFor=p=>PROTO_FMT[p]||PROTO_FMT.Instagram;
+function protoContext(){const c=S.creator||{},od=S.obd||{};return{niche:c.niche||od.niche||'Lifestyle',audience:c.audience||od.audience||'Young professionals',platform:c.platform||od.platform||'Instagram',goal:c.goal||od.goal||''}}
+function protoStage(){
+  if(S.sp==='started')return 'started';
+  if(S.sp==='estab')return 'established';
+  if(S.sp==='begin')return null;
+  const st=(S.creator&&S.creator.stage)||'';
+  if(st==='Experimenting')return 'started';
+  if(st==='Growing'||st==='Monetizing'||st==='Professional')return 'established';
+  return null;
+}
+const PROTO_TIER={strong:{like:.082,save:.036,share:.018,comm:.006,foll:.0070},avg:{like:.055,save:.019,share:.009,comm:.0045,foll:.0032},weak:{like:.038,save:.007,share:.0038,comm:.0030,foll:.0012}};
+function mkProto(i,r,ctx){
+  const views=r.views||0,j=((i*3)%5)-2,t=r.tier?PROTO_TIER[r.tier]:null;
+  const rate=k=>t?Math.max(.0002,t[k]+j*(k==='save'?.0015:k==='like'?.004:k==='share'?.0008:k==='comm'?.0004:.0004)):0;
+  return{id:-(i+1),src:'proto',title:r.title,topic:r.topic,sub:r.sub,aud:r.aud||ctx.audience,format:r.format,
+  platform:r.platform||ctx.platform,hook:r.hook,hyp:r.hyp,variable:r.variable,goal:r.goal||ctx.goal||'',
+  views,likes:Math.round(views*rate('like')),comments:Math.round(views*rate('comm')),saves:Math.round(views*rate('save')),
+  shares:Math.round(views*rate('share')),gained:Math.round(views*rate('foll')),date:r.date,status:r.status||'Learned',an:null};
+}
+function withExps(arr,fn){const prev=S.exps;S.exps=arr;try{return fn()}finally{S.exps=prev}}
+function buildStarted(ctx){
+  const T=topicsFor(ctx.niche),F=fmtFor(ctx.platform),g=ctx.goal||'Discover what content works';
+  const rows=[
+  {title:`My first ${T[0]} routine, start to finish`,topic:T[0],sub:'Beginner basics',format:F[0],hook:`If you're just getting into ${ctx.niche.toLowerCase()}, watch this first.`,hyp:'A full beginner walkthrough earns saves from people at the same stage.',variable:'Content depth (full walkthrough vs single tip)',goal:g,date:'2026-08-14',views:5400,like:.064,save:.026,share:.011,comm:.004,foll:.0055},
+  {title:`3 ${T[1]} tips I wish I knew sooner`,topic:T[1],sub:'Quick wins',format:F[1%F.length],hook:'The third one would have saved me weeks.',hyp:'Numbered, specific tips get saved and shared by beginners.',variable:'Hook framing (specific claim vs neutral list)',goal:g,date:'2026-09-05',views:12800,like:.068,save:.036,share:.016,comm:.005,foll:.0075},
+  {title:`${ctx.niche}: what I'd do differently as a beginner`,topic:T[2],sub:'Lessons learned',format:F[2%F.length],hook:'Nobody tells you this part before you start.',hyp:'Honest reflection invites comments but fewer saves.',variable:'Framing (reflection vs how-to)',goal:g,date:'2026-09-26',views:2150,like:.058,save:.019,share:.008,comm:.004,foll:.003}];
+  const recs=rows.map((r,i)=>mkProto(i,Object.assign({aud:ctx.audience,platform:ctx.platform},r),ctx));
+  if(recs[1])recs[1].an=withExps(recs,()=>analyze(recs[1]));
+  return recs;
+}
+const ESTAB_PAT=[
+ t=>({title:`3 ${t} mistakes I made as a beginner`,sub:'Mistakes',hook:"You're probably making mistake #2 right now.",hyp:'A mistake-framed hook earns more saves than a neutral list.',variable:'Hook framing (mistakes vs neutral list)'}),
+ t=>({title:`My exact ${t} routine in 10 minutes`,sub:'Routine',hook:"This is the routine I'd show a friend.",hyp:'A complete routine holds watch time and earns saves.',variable:'Content structure (full routine vs tips)'}),
+ t=>({title:`What nobody tells you about ${t}`,sub:'Myths',hook:'Nobody warns you about this part.',hyp:'Curiosity framing lifts comments and shares.',variable:'Hook framing (curiosity vs literal)'}),
+ t=>({title:`${t}: what worked vs what didn't`,sub:'Recap',hook:'I tracked this for 30 days — here is what happened.',hyp:'Honest recaps build trust and saves.',variable:'Framing (honest recap vs highlight)'}),
+ t=>({title:`5 ${t} habits worth stealing`,sub:'Habits',hook:'Habit 3 saves me hours every week.',hyp:'A specific claim inside a list hook drives saves.',variable:'Format (list vs single idea)'}),
+ t=>({title:`The ${t} test I ran for two weeks`,sub:'Experiment',hook:'Two weeks, one change, real numbers.',hyp:'Sharing raw numbers earns saves from analytical viewers.',variable:'Framing (experiment vs advice)'}),
+ t=>({title:`Why your ${t} posts get scrolled past`,sub:'Diagnostics',hook:"If people scroll past, it's usually one of these.",hyp:'Problem-first hooks earn saves from fellow creators.',variable:'Hook framing (problem-first vs outcome-first)'}),
+ t=>({title:`Before you buy anything for ${t}, watch this`,sub:'Buying advice',hook:"Don't spend money until you've seen this.",hyp:'Buyer-warning framing earns saves and shares.',variable:'Hook framing (warning vs review)'}),
+ t=>({title:`${t} on a budget: my honest setup`,sub:'Budget',hook:'Everything here costs less than a takeaway.',hyp:'Budget framing increases usefulness and sharing.',variable:'Price framing (budget vs premium)'}),
+ t=>({title:`I tried the most recommended ${t} advice`,sub:'Myth-busting',hook:'Everyone recommends this. It did not hold up.',hyp:'Contrarian results drive comments more than saves.',variable:'Stance (contrarian vs agreeable)'}),
+ t=>({title:`The one ${t} change that fixed my consistency`,sub:'Consistency',hook:'One change. That is it.',hyp:'A minimal-change claim lifts follows from viewers who relate.',variable:'Claim size (one change vs many)'}),
+ t=>({title:`30 seconds of ${t} you'll actually use`,sub:'Quick tips',hook:'Watch this before your next attempt.',hyp:'Short, immediately useful posts get saved for later.',variable:'Length (under 30s vs over 60s)'}),
+ t=>({title:`How I plan a week of ${t}`,sub:'Planning',hook:'Sunday, 20 minutes, week sorted.',hyp:'Process posts earn saves from planners.',variable:'Content type (process vs result)'}),
+ t=>({title:`Answering your ${t} questions`,sub:'Q&A',hook:'You asked — here are straight answers.',hyp:'Q&A builds comments but weaker saves.',variable:'Format (Q&A vs tutorial)'}),
+ t=>({title:`${t} for people short on time`,sub:'Time-saving',hook:'No long sessions required.',hyp:'Time-constrained framing widens the addressable audience.',variable:'Time framing (5 minutes vs 30 minutes)'}),
+ t=>({title:`The ${t} myth I stopped believing`,sub:'Myths',hook:'This advice sounds right. It is not.',hyp:'Myth posts earn shares with uneven saves.',variable:'Framing (myth vs how-to)'}),
+ t=>({title:`My worst ${t} month and what I learned`,sub:'Story',hook:'Everything went wrong — and that was useful.',hyp:'Failure stories earn comments and follows.',variable:'Tone (failure story vs win)'}),
+ t=>({title:`${t} checklist I wish I had earlier`,sub:'Checklist',hook:'Save this — you will need it.',hyp:'An explicit save prompt lifts saves.',variable:'CTA (save prompt vs none)'}),
+ t=>({title:`A realistic day in my ${t} life`,sub:'Day in my life',hook:'Not the highlight reel.',hyp:'Realistic days earn comments from peers.',variable:'Framing (realistic vs ideal)'}),
+ t=>({title:`Comparing 3 popular ${t} approaches`,sub:'Comparison',hook:'Same goal, three methods, one winner.',hyp:'Comparison posts earn saves from people deciding.',variable:'Format (comparison vs single method)'}),
+ t=>({title:`Your ${t} questions, quick answers`,sub:'Q&A',hook:'Short answers, no fluff.',hyp:'Short answers hold attention but earn few saves.',variable:'Answer length (short vs detailed)'}),
+ t=>({title:`Why I changed my approach to ${t}`,sub:'Story',hook:'I stopped doing this last month.',hyp:'Change stories spark debate in the comments.',variable:'Stance (change vs status quo)'}),
+ t=>({title:`End-of-month ${t} recap: what worked`,sub:'Recap',hook:'Here is what actually moved the needle.',hyp:'Data recaps earn saves from fellow creators.',variable:'Framing (data recap vs opinion)'}),
+ t=>({title:`Starting ${t}: what I would do differently`,sub:'Beginner guide',hook:'If I started again, I would skip this step.',hyp:'Restart framing resonates with beginners.',variable:'Perspective (restart vs first-time)'})];
+const ESTAB=[
+ [0,0,'strong',46200,'2026-01-18'],[1,1,'strong',28400,'2026-02-02'],[2,0,'avg',12800,'2026-02-15'],[3,0,'avg',9600,'2026-02-27'],
+ [4,2,'weak',3400,'2026-03-11'],[5,0,'strong',33800,'2026-03-24'],[0,1,'strong',21500,'2026-04-05'],[1,0,'avg',11200,'2026-04-18'],
+ [2,1,'avg',8700,'2026-04-30'],[3,0,'weak',4200,'2026-05-12'],[4,0,'avg',14600,'2026-05-25'],[5,0,'strong',52100,'2026-06-06'],
+ [0,0,'avg',15400,'2026-06-19'],[1,1,'weak',2900,'2026-07-01'],[2,0,'weak',3800,'2026-07-13'],[3,2,'weak',4100,'2026-07-25'],
+ [4,1,'avg',10900,'2026-08-06'],[5,0,'avg',13100,'2026-08-18'],[0,0,'strong',39700,'2026-08-29'],[1,0,'avg',12100,'2026-09-08'],
+ [2,2,'weak',2600,'2026-09-17'],[3,1,'avg',9800,'2026-09-25'],[4,0,null,0,'2026-10-02','Published'],[5,0,null,0,'2026-10-06','Created']];
+function buildEstablished(ctx){
+  const T=topicsFor(ctx.niche),F=fmtFor(ctx.platform);
+  const GOALS=[ctx.goal||'Grow my audience','Discover what content works','Improve content performance','Build consistency'].filter((g,i,a)=>g&&a.indexOf(g)===i);
+  const recs=ESTAB.map((row,i)=>{
+    const[ti,fi,tier,views,date,status]=row,p=ESTAB_PAT[i%ESTAB_PAT.length](T[ti%T.length]);
+    return mkProto(i,{title:p.title,topic:T[ti%T.length],sub:p.sub,format:F[fi%F.length],hook:p.hook,hyp:p.hyp,variable:p.variable,
+    goal:GOALS[i%GOALS.length],aud:ctx.audience,platform:ctx.platform,views,date,tier,status:status||'Learned',like:0,save:0,share:0,comm:0,foll:0},ctx);
+  });
+  [0,5,11,9,14].forEach(k=>{if(recs[k]&&recs[k].views)recs[k].an=withExps(recs,()=>analyze(recs[k]))});
+  return recs;
+}
+const PROTO_ADJ={'Fashion & Style':'Beauty','Beauty':'Fashion & Style','Fitness':'Food','Food':'Fitness','Travel':'Lifestyle','Gaming':'Tech','Education':'Tech','Lifestyle':'Travel','Tech':'Gaming','Comedy':'Lifestyle','Art':'Fashion & Style'};
+const adjacentNiche=n=>PROTO_ADJ[n]||(n==='Lifestyle'?'Travel':'Beauty');
+const nicheCat=n=>String(n||'Content').split(' & ')[0];
+function protoExtras(ctx){
+  const adj=adjacentNiche(ctx.niche),cat=nicheCat(ctx.niche),acat=nicheCat(adj);
+  return{collabs:[
+    {id:1,name:`Rhea (${adj.toLowerCase()})`,overlap:68,idea:`A ${ctx.niche.toLowerCase()} × ${adj.toLowerCase()} crossover post`,why:`Their audience overlaps strongly with yours (${ctx.audience}), and ${adj.toLowerCase()} complements your ${ctx.niche.toLowerCase()} niche.`,status:null},
+    {id:2,name:'Kabir (budget picks)',overlap:54,idea:`Honest ${ctx.niche.toLowerCase()} picks on a budget`,why:'Budget-conscious viewers; your best-evidenced pattern is the content that earns saves.',status:null}],
+  opps:[
+    {id:1,brand:`${cat} brand (partner)`,camp:`${cat} creator campaign`,cat,deliv:'1 Reel + 3 Stories',pay:'₹15,000–25,000 (brand-stated)',due:'2026-11-15',match:92,reqs:['Short-form video',ctx.audience,`${cat} proof`],stat:null},
+    {id:2,brand:`${acat} brand (partner)`,camp:`${acat} × ${cat} crossover`,cat:acat,deliv:'1 Reel',pay:'₹10,000 (brand-stated)',due:'2026-11-30',match:58,reqs:['Short-form video','Budget content'],stat:null},
+    {id:3,brand:'Student budget app (finance)',camp:'Spend-smart semester',cat:'Finance',deliv:'1 Reel',pay:'Product + ₹8,000',due:'2026-12-05',match:41,reqs:['Budget content proof'],stat:null}]};
+}
+function ensurePrototypeData(){
+  const want=protoStage(),ctx=protoContext();let changed=false;
+  if(want){
+    if(!S.creator.niche){S.creator.niche=ctx.niche;changed=true}
+    if(!S.creator.audience){S.creator.audience=ctx.audience;changed=true}
+    if(!S.creator.platform){S.creator.platform=ctx.platform;changed=true}
+    if(!S.creator.goal){S.creator.goal=want==='established'?'Get brand collaborations':'Discover what content works';changed=true}
+    if(!S.exps.length){
+      S.exps=want==='established'?buildEstablished(ctx):buildStarted(ctx);
+      S.protoStage=want;changed=true;
+    }
+  }
+  if(S.creator.niche&&S.collabs.every(c=>!c.status)&&S.opps.every(o=>!o.stat)){
+    const x=protoExtras(protoContext());S.collabs=x.collabs;S.opps=x.opps;changed=true;
+  }
+  if(changed)save();
+  return changed;
+}
+function afterProfile(user){if(S.me!==(user&&user.id)||sKey!==stateKey(user&&user.id))return;restoreOnbDraft(user.id);ensurePrototypeData()}
+const hasProto=()=>Array.isArray(S.exps)&&S.exps.some(e=>e&&e.src==='proto');
+const protoNote=()=>hasProto()?`<p class="small" style="display:flex;gap:.5rem;align-items:center;flex-wrap:wrap"><span class="pchip" style="background:var(--soft);margin:0">Prototype sample data</span><span class="mut">Prototype dataset · not connected to a real account. Sample experiments for demonstration — not imported from your social accounts.</span></p>`:'';
+const protoFlag=e=>e&&e.src==='proto'?`<p class="small" style="margin:.2rem 0 .8rem"><span class="pchip" style="background:var(--soft);margin-right:.4rem">Prototype sample data</span><span class="mut">Prototype sample experiment · not connected to a real account.</span></p>`:'';
+function oppWhy(o){const d=done(),cat=String(o.cat||'').toLowerCase();const hits=d.filter(e=>((e.topic||'')+' '+(e.sub||'')+' '+(S.creator.niche||'')).toLowerCase().includes(cat)).length;const s=stats();
+  if(o.match>80)return hits?`Why: ${hits} measured post${hits>1?'s':''} in ${o.cat}, plus your strongest pattern (${s.best?`${s.best.topic} · ${s.best.format}`:'top save rate'}).`:'Why: audience and format overlap with your strongest content.';
+  if(o.match>50)return `Partial fit: audience matches, ${hits?`but only ${hits} measured ${o.cat} post${hits>1?'s':''}`:`and no measured ${o.cat} evidence yet`}.`;
+  return `Weak fit: no measured ${o.cat} evidence in your data yet.`}
+let userLoad=null;
+function ensureUser(user){
+  if(!user)return Promise.resolve(false);
+  if(userLoad&&userLoad.id===user.id)return userLoad.p;
+  const job={id:user.id,p:null};
+  job.p=(async()=>{
+    bindUser(user);
+    const ok=await loadProfileFor(user);
+    if(!ok&&userLoad===job)userLoad=null;
+    if(authReady&&S.me===user.id)render();
+    return ok;
+  })();
+  userLoad=job;
+  return job.p;
+}
+async function loadProfileFor(user){
+  if(!supa){resetProfileState(user);afterProfile(user);return false}
+  let profile=null,error=null;
+  try{
+    const r=await supa.from('profiles').select('*').eq('id',user.id).maybeSingle();
+    profile=r.data;error=r.error;
+  }catch(err){error=err}
+  if(S.me!==user.id||sKey!==stateKey(user.id))return false;
+  if(error){console.error('Profile load failed:',error);resetProfileState(user);afterProfile(user);return false}
+  if(!profile){resetProfileState(user);afterProfile(user);return false}
+  applyProfile(profile,user);
+  restoreOnbDraft(user.id);
+  ensurePrototypeData();
+  await loadExperiments();
+  return true;
+}
+const $=s=>document.querySelector(s),f=n=>n>=1000?(n/1000).toFixed(n%1000?1:0)+'K':String(n),med=a=>{a=[...a].sort((x,y)=>x-y);const m=a.length>>1;return a.length%2?a[m]:(a[m-1]+a[m])/2};
+const pct=(a,b)=>b?(100*a/b).toFixed(1)+'%':'—',x=(a,b)=>b?(a/b).toFixed(1)+'×':'—';
+const followerConversion=e=>{const v=Number(e&&e.views),g=Number(e&&e.gained);if(!Number.isFinite(v)||!Number.isFinite(g)||v<=0||g<0)return'—';return(100*g/v).toFixed(1)+'%'};
+const done=()=>S.exps.filter(e=>e.views);
+ const personalEvidence=()=>done().length>0;
+const ST=['Idea','Created','Published','Measuring','Learned'];
+function stats(){const d=done();return{ms:med(d.map(e=>e.saves)),msh:med(d.map(e=>e.shares)),mv:med(d.map(e=>e.views)),mg:med(d.map(e=>e.gained)),best:[...d].sort((a,b)=>b.saves/b.views-a.saves/a.views)[0]}}
+function analyze(e){const o=done().filter(z=>z.id!==e.id);if(!e.views)return null;const L=[`This post reached ${e.views.toLocaleString()} views, ${e.saves} saves, ${e.shares} shares and +${e.gained} followers.`,`Save rate ${pct(e.saves,e.views)}, share rate ${pct(e.shares,e.views)}, engagement ${pct(e.likes+e.comments+e.saves+e.shares,e.views)}.`];let lk=[],un=[];
+if(o.length>=2){const ms=med(o.map(z=>z.saves)),mv=med(o.map(z=>z.views));L.push(`Saves are ${x(e.saves,ms)} and views ${x(e.views,mv)} your median of your other ${o.length} experiments.`);if(e.saves/e.views>med(o.map(z=>z.saves/z.views))*1.3)lk.push(`The ${e.variable.toLowerCase()} may have contributed to stronger saves relative to views.`);else lk.push('Saves relative to views are close to your usual range, so this post looks like a baseline.')}else un.push("Fewer than 3 experiments exist, so I can't compare this against a reliable baseline yet.");
+un.push(`We can't say the ${e.variable.toLowerCase()} caused the result: hook, topic, timing and format may all have differed from other posts.`);if(!e.watch)un.push("I don't have watch time or retention data for this post.");
+return{observed:L,likely:lk,unknown:un,next:`Keep the format and audience of "${e.title}" and change only one thing: ${e.variable.toLowerCase()}.`,conf:o.length>=2?'Moderate':'Low'}}
+function nextExp(){const s=stats(),b=s.best;if(!b)return null;const o=done().filter(z=>z.id!==b.id);const h=String(b.hook||'').replace(/"/g,'');return{title:`${b.topic}: another ${b.format} with a new hook`,hyp:`A different opening hook on the same topic and format may repeat the saves and shares "${b.title}" earned.`,hook:'Lead with the outcome first, then the context — and cut the opening that does not earn attention.',format:b.format,aud:b.aud,goal:S.creator.goal,variable:`Opening hook style (new hook vs "${h.length>40?h.slice(0,40)+'…':h}")`,evidence:`"${b.title}" had ${x(b.saves,s.ms)} your median saves and ${x(b.shares,s.msh)} your median shares (${b.saves} saves, ${b.shares} shares, +${b.gained} followers).`,conf:Math.min(85,45+o.length*10+10),unk:"We don't yet know whether the result came from the hook, topic, timing or format — so only the hook changes.",effort:'About 2–3 hours'}}
+const normS=s=>String(s||'').toLowerCase().replace(/[^a-z0-9]+/g,' ').replace(/\s+/g,' ').trim();
+const tkS=s=>normS(s).split(' ').filter(w=>w.length>2);
+const contain=(a,b)=>{const A=new Set(tkS(a)),B=tkS(b);if(!A.size||!B.length)return 0;let h=0;B.forEach(w=>{if(A.has(w))h++});return h/B.length};
+const jac=(a,b)=>{const A=new Set(tkS(a)),B=new Set(tkS(b));if(!A.size||!B.size)return 0;let h=0;B.forEach(w=>{if(A.has(w))h++});return h/(A.size+B.size-h)};
+const near=(a,b,t)=>{if(!a||!b)return false;return Math.max(contain(a,b),contain(b,a),jac(a,b))>=t};
+const varCore=v=>{const s=String(v||'').split('(')[0].split('–')[0].split('-')[0];return s.replace(/\s+/g,' ').trim().toLowerCase()};
+function sameExp(a,b){
+ if(a.title&&normS(a.title)&&normS(a.title)===normS(b.title))return true;
+ if(near(a.title,b.title,.6))return true;
+ if(a.hook&&b.hook&&near(a.hook,b.hook,.8))return true;
+ const c=varCore(a.variable);
+ if(c&&c.length>2&&c===varCore(b.variable)&&(near(a.title,b.title,.55)||near(a.format,b.format,.9)))return true;
+ return false}
+function dupNext(n,list){
+ list=list||S.exps;
+ const c=varCore(n.variable);
+ if(c&&c.length>2){const same=list.filter(e=>e&&varCore(e.variable)===c);if(same.length>=2)return same[0]}
+ for(const e of list){if(e&&sameExp(n,e))return e}
+ return null}
+const shownPending=()=>(S.seenNext||[]).filter(s=>s&&s.title&&!S.exps.some(e=>e&&normS(e.title)===normS(s.title)));
+function localNext(){const n=nextExp();if(!n)return null;const c=S.creator,d=done(),tested=[...new Set(d.map(e=>e.format))].join(', ')||'your usual formats',alt=fmtFor(c.platform).find(z=>!d.some(e=>e.format===z));
+ const alts=[n,
+  {...n,title:`${n.topic}: one fixed publishing slot for two weeks`,hook:`Two weeks, one slot, no ad-hoc posts — here is what changed.`,hyp:`You publish ${tested} when you have time. A fixed slot tests whether consistency, not content, is moving your numbers.`,variable:'Publishing cadence (fixed slot vs whenever you post)'},
+  {...n,title:`${n.topic}: ${alt||'your least-used format'}, same idea`,format:alt||n.format,hook:'Same idea, different container — watch what changes.',hyp:`You have only measured ${tested}. Keeping the hook and changing the format tells us whether format or hook earns the saves.`,variable:`Format (${alt||'least-used format'} vs your usual)`}];
+ return alts.find(a=>!dupNext(a)&&!shownPending().some(s=>sameExp(a,s)))||n}
+function learnings(){const d=done(),s=stats(),by={},fm={};d.forEach(e=>{(by[e.topic]=by[e.topic]||[]).push(e);(fm[e.format]=fm[e.format]||[]).push(e)});const know=[],tops=Object.entries(by).map(([t,a])=>({t,saves:med(a.map(e=>e.saves)),n:a.length})).sort((a,b)=>b.saves-a.saves);
+if(tops[0])know.push(`${tops[0].t}: ${tops[0].saves} median saves (${tops[0].n} post${tops[0].n>1?'s':''})`);
+const b=s.best;if(b)know.push(`${b.title} is your best save rate: ${pct(b.saves,b.views)}`);
+const fl=Object.entries(fm).map(([t,a])=>({t,n:a.length,rate:med(a.map(e=>e.saves/e.views))})).sort((a,b)=>b.n-a.n),bv=med(d.map(e=>e.saves/e.views));
+if(fl.length===1&&d.length)know.push(`${fl[0].t} is your only tested format so far (${fl[0].n} of ${d.length}).`);
+else if(fl.length>1){const win=fl.slice().sort((a,b)=>b.rate-a.rate)[0];know.push(`${fl[0].t} is your most-tested format (${fl[0].n} of ${d.length}); ${win.t} has your strongest median save rate (${pct(win.rate,1)} of views).`)}
+const susp=[],above=fl.filter(z=>z.rate>bv),rare=above.filter(z=>z.n<=2).sort((a,b)=>b.rate-a.rate)[0];
+if(rare)susp.push(`${rare.t} may lift saves — its median save rate is above your usual range, but you have only tested it ${rare.n} time${rare.n>1?'s':''}.`);
+if(tops[1]&&tops[1].saves>s.ms)susp.push(`${tops[1].t} may also earn above-median saves (${x(tops[1].saves,s.ms)} your median).`);
+if(!susp.length){const hi=tops[0],lo=tops[tops.length-1];if(d.length>=2&&tops.length>=2&&hi.saves>lo.saves)susp.push(`${hi.t} may influence save behavior compared with ${lo.t} (${hi.saves} vs ${lo.saves} median saves), but the samples are small (${hi.n} and ${lo.n} posts) — more experiments are needed to isolate the effect.`);else susp.push('Not enough measured experiments to support a specific suspicion yet — add a few more results before drawing conclusions.')}
+const tested=new Set(d.map(e=>e.format)),untested=fmtFor(S.creator.platform).filter(z=>!tested.has(z)).slice(0,2);
+const unk=d.length<3?['A reliable baseline — you need a few more measured experiments.']:untested.map(z=>`Whether ${z} content would earn saves — you have not tested it yet.`);
+unk.push('Retention, watch time and audience demographics (not in your data).');unk.push('Solo vs creator collaboration');
+return{know,susp,unk}}
+function coach(q){const l=q.toLowerCase(),s=stats(),b=s.best,n=nextExp(),d=done();
+ if(/caused|definitely.*(hook|work)/.test(l)&&/hook|changed/.test(l))return"Based on what you reported, the timing is consistent with the hook being a possible contributor — but that's your report in this question, not verified analytics, and causality can't be established from it alone because other variables may have changed. Keep the format, topic and audience similar and test another hook variation.";
+ if(/without mention|don.t mention|not mention|hide.*sponsor/.test(l))return"I won't help hide that a post is paid — that misleads your audience. I can write a caption with a natural disclosure (like “Paid partnership”) that still sounds like you.";
+ if(/guarantee|go viral|will.*viral/.test(l))return"I can't guarantee virality, reach, followers, or income — no one honestly can. I can give you a testable idea based on your actual evidence: "+(b?`treat “${b.title}” (${b.format} on ${b.topic}: ${b.saves} saves from ${f(b.views)} views) as your working pattern, then run one controlled variation that changes a single variable and measure it.`:"add results to an experiment first and I'll build one from your measured data instead of guessing.")+" Results stay uncertain — that's what the test is for.";
+ if(/demographic|age group|who loves|exactly who/.test(l))return"I don't have audience demographics in your data yet, so I won't guess an age group. Your stated audience is "+(S.creator.audience||'not set yet')+"; adding platform insights would let me check that.";
+ if(/charge|price|rate/.test(l)){const fk=l.match(/(\d+(?:\.\d+)?)\s*k\b/),fp=l.match(/(\d+(?:\.\d+)?)\s*(?:%|percent)/),rep=[fk?fk[1]+'K followers':'',fp?fp[1]+'% engagement':''].filter(Boolean).join(' and ');return(rep?"I'll take your "+rep+" as user-provided inputs from this question, not as verified analytics here. ":"")+"An exact price can't be responsibly determined from follower count and engagement alone. A defensible rate or range needs more information: average reach/views (your experiment history shows a median of "+(s.mv?f(s.mv)+' views':'no measured views yet')+"), engagement quality, audience relevance, deliverables, platform, usage rights, exclusivity, campaign scope and content complexity. I don't have those values and I won't invent them — more information is needed before I can give a defensible exact price or range, and I can't quote a guaranteed figure without it."}
+ if(/definitely caused|hook.*caused|caused/.test(l))return"I can't confirm that. If other things also changed (topic, format, timing), the hook might be one cause among several. To learn it, repeat the post and change only the hook.";
+ if(/flop|why did/.test(l)&&/flop/.test(l)){const e=d.slice().sort((x,y)=>(x.saves/Math.max(1,x.views))-(y.saves/Math.max(1,y.views)))[0];if(!e)return"I don't have enough evidence to determine why a post flopped — no experiment has results yet. Add views, saves and shares for the post, and I'll separate what we observe from what is still unknown.";const a=analyze(e);return"OBSERVED: “"+e.title+"” — "+f(e.views)+" views, "+e.saves+" saves, "+e.shares+" shares, save rate "+pct(e.saves,e.views)+". LIKELY: "+(a&&a.likely.length?a.likely.join(' '):"No comparison in your data supports a specific cause yet — any reason would be a guess.")+" UNKNOWN: Whether you meant a different post; retention, watch time, distribution, audience demographics and timing are not in your data"+(a&&a.unknown.length?". "+a.unknown.join(' '):"")+". NEXT TEST: "+(a&&a.next?a.next:"Change one variable on your next post and measure it.")+" I can't determine the exact cause from this data — treat these as hypotheses, not conclusions."}
+ if(/changed|doubled|increas|went up|2x|more views/.test(l)&&(l.includes('hook')||l.includes('view')||l.includes('after')))return"Based on what you reported, that change lines up with a possible improvement — but it is user-reported information in your question, not verified analytics in your experiment history. To confirm it, keep everything else fixed and repeat the change as one controlled test; I can't prove causation from a report alone.";
+ if(/copy.*exact|exactly/.test(l))return b?"I'd run a controlled variation instead: keep the format and audience of "+b.title+", and change one variable — the opening hook only.":"Add results to at least one experiment first — then I can suggest a controlled variation to copy.";
+ if(/why.*(better|perform)/.test(l)){const a=analyze(S.exps[S.exps.length-1]);return a?'What we saw: '+a.observed.join(' ')+' Likely: '+(a.likely[0]||'nothing conclusive.')+' Unknown: '+(a.unknown[0]||'missing variables such as retention, watch time and distribution'):'Add results to your latest experiment first — then I can explain what we saw and what is still unknown.'}
+ if(/next|test|last three|generic|ideas/.test(l))return n?`Based on your ${done().length} experiments: "${n.title}". ${n.evidence} ${n.unk}`:'Add results to at least one experiment first, then I can suggest a useful next test.';
+ if(/learned|audience|care/.test(l)){const L=learnings();return'We know: '+L.know.join('; ')+'. Still unknown: '+L.unk.join(', ')+'.'}
+ if(/brand|ready|evidence|collab/.test(l))return b?`You have evidence in ${b.topic} (${b.saves} saves, +${b.gained} followers on one post) but no completed campaign yet. Strengthening step: another ${b.format} experiment on that topic and one measured campaign. I can't guarantee deals or income.`:"I don't have measured results yet, so I can't judge brand readiness. Add results to an experiment first.";
+ return"I don't have enough evidence to determine that yet. Try asking about your latest experiment, what to test next, or brand readiness."}
+function pitch(o){const b=stats().best,c=S.creator,plat=c.platform||'social',niche=(c.niche||'content').toLowerCase(),aud=(c.audience||'your audience').toLowerCase();
+if(!b)return`Hi ${o.brand.split(' (')[0]} team,\n\nI'm ${c.name}, a ${plat} creator in ${niche} for ${aud}.\n\nI'm still building my measured experiment history, so I don't have performance results to cite yet — I'd rather share real numbers once I have them than estimate.\n\nFor "${o.camp}" (${o.deliv}), I'd run one focused test and share the full experiment record, with clear disclosure of the partnership.\n\n${c.name}`;
+return`Hi ${o.brand.split(' (')[0]} team,\n\nI'm ${c.name}, a ${plat} creator in ${niche} for ${aud}.\n\nWhy me: my ${b.format} "${b.title}" reached ${b.views.toLocaleString()} views with ${b.saves} saves, ${b.shares} shares and +${b.gained} followers, which suggests ${b.topic.toLowerCase()} content resonates with this audience.\n\nFor "${o.camp}" (${o.deliv}), I'd test a similar ${b.format} format. I can share the full experiment record and will disclose the partnership clearly.\n\nI haven't run a paid campaign with a brand yet, so I'd welcome measured results as part of the work.\n\n${c.name}`}
+const go=h=>{location.hash=h};const route=()=>(location.hash||'#home').slice(1).split('/');
+function toast(t){const d=document.createElement('div');d.className='toast';d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),2600)}
+const NAV=[['home','Home'],['exp','Experiments'],['learn','Learnings'],['collab','Collaborate'],['proof','Creator Proof'],['opp','Opportunities'],['coach','Growth coach'],['me','Settings']];
+function thumb(e,i){return`<div class="thumb" style="background:linear-gradient(160deg,${COL[i%4]},${COL[(i+1)%4]}99)">${e.title}</div>`}
+function card(e,i){return`<a href="#exp/${e.id}" style="text-decoration:none;color:inherit">${thumb(e,i)}<p><b>${f(e.views)}</b> views · ${e.saves} saves<br><span class="small mut">${e.shares} shares · +${e.gained} followers</span></p></a>`}
+const V={};
+V.landing=()=>`<div class="wrap"><nav style="display:flex;justify-content:space-between"><b style="font-family:'Young Serif';color:var(--pri);font-size:1.3rem">Creator Lab</b><button class="btn alt sm" data-a="auth" data-m="login">Log in</button></nav>
+<div class="hero"><div><h1>Turn every post into something you learn from.</h1><p style="font-size:1.2rem;max-width:34rem" class="mut">Creator Lab helps creators experiment, understand their audience, and turn what works into evidence they can grow and monetize with.</p><p><b>Don't just post more. Learn what works.</b></p><p><button class="btn" data-a="auth" data-m="signup">Start creating</button> <button class="btn alt" data-a="auth" data-m="login">Log in</button></p></div>
+<div class="collage"><div style="background:var(--acc);left:0;top:10px;width:55%;transform:rotate(-4deg)">5 outfits under ₹1,000<br><small>620 saves</small></div><div style="background:var(--pri);color:#fff;right:0;top:90px;width:55%;transform:rotate(3deg)">We know: budget framing saves<br><small>We don't know: why</small></div><div style="background:#fff;left:12%;bottom:0;width:60%">Next test: ₹700<br><small>change one thing</small></div></div></div></div>`;
+V.auth=m=>`<div class="modal"><div><h2>${m=='signup'?'Start creating':'Welcome back'}</h2><p class="small mut">Sign up or log in — your creator profile is saved to your account.</p>${m=='signup'?'<label>Name</label><input id="n">':''}<label>Email</label><input id="e" type="email"><label>Password</label><input id="p" type="password"><p id="err" style="color:var(--warn)"></p><button class="btn" data-a="${m}">${m=='signup'?'Create account':'Log in'}</button> <button class="btn alt" data-a="close">Cancel</button><p class="small mut">${m=='signup'?'Already have an account? <button data-a="auth" data-m="login" style="background:none;border:0;padding:0;color:var(--pri);text-decoration:underline;cursor:pointer">Log in</button>':'Don\'t have an account? <button data-a="auth" data-m="signup" style="background:none;border:0;padding:0;color:var(--pri);text-decoration:underline;cursor:pointer">Create one</button>'}</p></div></div>`;
+const OB=[['What do you create?','niche',['Fashion & Style','Beauty','Fitness','Food','Travel','Gaming','Education','Lifestyle','Tech','Comedy','Art','Other']],['Who is your audience?','audience',['College students 18–24','Young professionals','Parents','Fitness beginners','Beauty enthusiasts','Travelers']],['Where do you mainly post?','platform',['Instagram','TikTok','YouTube','LinkedIn','X','Other']],['What is your goal right now?','goal',['Grow my audience','Discover what content works','Improve content performance','Find creator collaborations','Get brand collaborations','Monetize my influence']],['Where are you as a creator?','stage',['Just starting','Experimenting','Growing','Monetizing','Professional']]];
+V.onb=()=>{const[q,k,o]=OB[S.ob],v=S.obd[k],hO=o.includes('Other'),oSel=hO&&!!v&&(!o.includes(v)||v==='Other'),cv=oSel&&v!=='Other'?v:'';return`<div class="wrap" style="max-width:640px;min-height:90vh;display:flex;flex-direction:column;justify-content:center"><div class="bar"><i style="width:${(S.ob+1)*20}%"></i></div><h2 style="margin-top:2rem">${q}</h2><div class="chips">${o.map(x=>`<button class="chip ${(oSel?'Other':v)==x?'on':''}" data-a="ob" data-k="${k}" data-v="${x}">${x}</button>`).join('')}</div>${oSel?`<input id="oth" placeholder="Type your own ${k}" value="${cv.replace(/"/g,'&quot;')}" style="max-width:24rem;margin-top:.9rem">`:''}${k=='audience'?'<input id="cu" placeholder="Or describe your own audience">':''}<p><button class="btn" data-a="obn" ${v||k=='audience'?'':'disabled style="opacity:.4"'}>${S.ob==4?'Open my workspace':'Continue'}</button></p></div>`};
+const SP=[{k:'begin',c:'b',t:"I'm just starting",d:"I haven't posted yet, or I'm still figuring out what to create."},{k:'started',c:'s',t:"I've started creating",d:"I've posted a few times and want to understand what's working."},{k:'estab',c:'e',t:"I already have an established account",d:"I already have an audience and enough content to analyze."}];
+const NOB=[['What do you want to create?','niche',['Fashion & Style','Beauty','Food','Fitness','Gaming','Education','Lifestyle','Travel','Tech','Other']],['Who do you want to reach?','audience',null],['Where do you want to create?','platform',['Instagram','YouTube','TikTok','LinkedIn','Other']],["What's your first goal?",'goal',['Find my direction','Grow my audience','Build consistency','Improve engagement','Eventually monetize']]];
+let onbSkip=0;
+function needStart(){if(!S.me||S.onbDone||onbSkip)return false;if(S.sp&&S.ob<5)return true;return authReady||!!S.obOn}
+function finishOnboarding(full){const userId=S.me;if(!userId){toast('Please log in again to save your setup.');return}const od=S.obd||{};if(full){S.creator={...S.creator,niche:od.niche||S.creator.niche,audience:od.audience||S.creator.audience,platform:od.platform||S.creator.platform,stage:'Just starting',goal:od.goal||S.creator.goal}}else{S.creator.stage=S.sp==='started'?'Experimenting':'Growing'}ensurePrototypeData();S.ob=5;S.obOn=0;onbSkip=1;(full?saveProfile():saveProfileStage()).then(ok=>{if(ok&&S.me===userId){S.onbDone=true;S.prof=1;clearOnbDraft(userId);save()}else if(!ok){toast("We couldn't confirm your setup is saved yet. You can keep working; we'll ask you to confirm next time.")}render()})}
+function profileSnapshot(){const userId=S.me;if(!userId)return null;const c=S.creator||{};return{id:userId,display_name:c.name||'',niche:c.niche||'',audience:c.audience||'',platform:c.platform||'',creator_stage:c.stage||'',primary_goal:c.goal||'',created_at:new Date().toISOString(),updated_at:new Date().toISOString(),onboarding_completed:true}}
+function stageSnapshot(){const userId=S.me;if(!userId)return null;const c=S.creator||{};return{id:userId,display_name:c.name||'',creator_stage:c.stage||'',created_at:new Date().toISOString(),updated_at:new Date().toISOString(),onboarding_completed:true}}
+async function upsertProfile(payload){if(!supa||!payload||!payload.id)return false;try{let r=await supa.from('profiles').upsert(payload);if(!r.error)return true;console.error('Profile save failed:',r.error);if(r.error.code==='23502'&&!('niche' in payload)){const fallback=Object.assign({},payload,{niche:'',audience:'',platform:'',primary_goal:''});r=await supa.from('profiles').upsert(fallback);if(!r.error)return true;console.error('Profile save failed:',r.error)}return false}catch(err){console.error('Profile save failed:',err);return false}}
+async function saveProfileStage(){return upsertProfile(stageSnapshot())}
+let obTicking=false;
+function connectTick(){if(obTicking||S.osp!=='conn'||(S.oc||0)>=3)return;obTicking=true;setTimeout(()=>{obTicking=false;if(S.osp!=='conn')return;S.oc=(S.oc||0)+1;render();connectTick()},650)}
+function obStart(){return`<div class="onb"><p class="brand">Creator Lab</p><span class="lab">Setup · Step 1 of 3</span>
+<h1>Let's find your starting point.</h1>
+<p class="lede">Creator Lab adapts to where you are — whether you're posting your first video or already building an audience.</p>
+<div class="sp3">${SP.map((c,i)=>`<button class="spcard ${c.c}" data-a="sp" data-v="${c.k}"><span class="num">0${i+1}</span><h3>${c.t}</h3><p>${c.d}</p><span class="go">Choose this →</span></button>`).join('')}</div>
+<p class="small mut" style="margin-top:1.7rem">Your answers shape where Creator Lab takes you first. You can change them later in Settings.</p></div>`}
+function obBeginQ(){const[q,k,o]=NOB[S.ob],od=S.obd||{},v=od[k],hO=!!o&&o.includes('Other'),oSel=hO&&!!v&&(!o.includes(v)||v==='Other'),cv=oSel&&v!=='Other'?v:'';return`<div class="onb"><p class="brand">Creator Lab</p><span class="lab">Setup · Step 2 of 3 · Question ${S.ob+1} of 4</span>
+<div class="bar" style="margin:.6rem 0 1.6rem"><i style="width:${(S.ob+1)*25}%"></i></div>
+<h1 style="font-size:clamp(1.9rem,5vw,3.1rem)">${q}</h1>
+${o?`<div class="qlist">${o.map(x=>`<button class="qopt ${(oSel?'Other':v)==x?'on':''}" data-a="qsel" data-k="${k}" data-v="${x}"><span class="dot"></span>${x}</button>`).join('')}</div>${oSel?`<label class="lab" style="margin-top:1rem;display:block">Custom ${k}</label><input id="oth" placeholder="Type your own ${k}" value="${cv.replace(/"/g,'&quot;')}" style="max-width:30rem">`:''}`:`<input id="au" placeholder="e.g. College students aged 18–24" value="${(v||'').replace(/"/g,'&quot;')}" style="max-width:30rem;margin-top:1.5rem">`}
+<div class="pickbar">${S.ob>0?'<button class="btn alt" data-a="qback">Back</button>':''}<button class="btn" data-a="qnext"${!o||v?'':' disabled style="opacity:.4"'}>${S.ob==3?'Continue →':'Continue'}</button></div></div>`}
+function obBeginDone(){const od=S.obd||{};return`<div class="onb"><p class="brand">Creator Lab</p><span class="lab">Setup · Step 3 of 3</span>
+<h1>You have a starting point.</h1>
+<div class="selrow">${[['Creating in',od.niche],['Reaching',od.audience],['Posting on',od.platform],['First goal',od.goal],['Stage','Just starting']].filter(r=>r[1]).map(r=>`<div><span class="lab" style="margin-top:0">${r[0]}</span><p>${r[1]}</p></div>`).join('')}</div>
+<div class="hl" style="margin-top:1.6rem"><h3>We don't know what your audience responds to yet.</h3><p>That's okay. Your first experiment is designed to help us find out.</p></div>
+<p style="margin-top:1.7rem"><button class="btn" data-a="buildfirst">Build my first experiment →</button></p></div>`}
+function obPath(){const e=S.sp==='estab';return`<div class="onb"><p class="brand">Creator Lab</p><span class="lab">Setup · Step 2 of 3</span>
+<h1>${e?"Let's start with your evidence.":"Let's learn from what you've already created."}</h1>
+<p class="lede">${e?"Instead of guessing what might work, we'll look at what has already worked for you.":"Creator Lab works best when it can see your real content performance."}</p>
+<div class="sp3" style="max-width:600px">
+<button class="spcard ${e?'e':'s'}" data-a="conn"><h3>Connect my creator account</h3><p>A simulated connection for this prototype — Creator Lab does not link a real Instagram, YouTube or TikTok account.</p><span class="go">Start connection →</span></button>
+<button class="spcard" data-a="manual"><h3>${e?'Add performance manually':'Add my posts manually'}</h3><p>Enter your posts and results yourself, right inside Creator Lab.</p><span class="go">Continue →</span></button>
+</div></div>`}
+function obConn(){const steps=['Recent content imported','Performance signals analyzed','Initial patterns found'],n=S.oc||0;return`<div class="onb"><p class="brand">Creator Lab</p><span class="lab">Setup · Step 2 of 3</span>
+<h1 style="font-size:clamp(1.8rem,4.5vw,2.7rem)">Connecting your creator account…</h1>
+<p class="lede">A simulated connection — nothing is sent to a real platform.</p>
+<ul class="simlist">${steps.map((t,i)=>`<li class="${i<n?'done':''}"><span class="mk">${i<n?'✓':'○'}</span>${t}</li>`).join('')}</ul>
+${n>=3?`<div class="paper" style="margin-top:1rem"><span class="pchip">Prototype preview</span><p style="margin-top:.7rem"><b>In the production version, these insights would come directly from your connected creator account.</b></p><p class="small mut">No real creator account has been connected and no external account data was imported.</p></div>
+<p style="margin-top:1.5rem"><button class="btn" data-a="snap">See my Creator Snapshot →</button></p>`:`<div class="bar"><i style="width:${Math.min(100,n*34)}%"></i></div>`}</div>`}
+function obSnap(){const e=S.sp==='estab';ensurePrototypeData();const d=done(),s=stats(),L=learnings();
+const fm={};d.forEach(z=>{fm[z.format]=(fm[z.format]||0)+1});
+const fl=Object.entries(fm).sort((a,b)=>b[1]-a[1]),best=s.best;
+const m=[['Content analyzed',`${d.length} sample post${d.length===1?'':'s'}`],['Audience signals',d.length?`Median ${f(s.mv)} views · ${s.ms} saves · ${s.msh} shares per post`:'No measured results yet'],['Strongest content',best?`“${best.title}”`:'Not enough data yet'],['Best format',fl.length?`${fl[0][0]} (${fl[0][1]} of ${d.length})`:'Not tested yet'],['Performance patterns',L.know[0]||'Not enough data yet']];return`<div class="onb"><p class="brand">Creator Lab</p><span class="lab">Prototype preview</span>
+<h1>Your Creator Snapshot</h1>
+<p class="lede">Prototype sample data, shown for demonstration — it is not drawn from your account.</p>
+${protoNote()}
+<div class="selrow">${m.map(r=>`<div><span class="lab" style="margin-top:0">${r[0]}</span><p>${r[1]}</p></div>`).join('')}</div>
+${e&&best?`<div class="evid">
+<div class="box obs"><b>Observed</b><p>Sample post: ${best.views.toLocaleString()} views, ${best.saves} saves, ${best.shares} shares, +${best.gained} followers — ${x(best.saves,s.ms)} your sample median saves.</p></div>
+<div class="box lik"><b>Likely — hypothesis, not fact</b><p>The ${String(best.variable).toLowerCase()} may be what drove saves. Nothing has been isolated yet.</p></div>
+<div class="box unk"><b>Unknown</b><p>No watch time, retention, demographic or posting-time data — so we can't explain why.</p></div>
+<div class="box nxt"><b>Next experiment</b><p>Keep the format and audience of “${best.title}”, and change only one variable.</p></div>
+</div><p class="small mut">This evidence structure is a prototype preview using sample data, not your account's performance.</p>`:''}
+<p style="margin-top:1.6rem"><button class="btn" data-a="enterws">Enter my workspace →</button></p></div>`}
+function onbView(){ensurePrototypeData();if(!S.sp)return obStart();if(S.sp==='begin')return S.ob>=4?obBeginDone():obBeginQ();if(S.osp==='conn'){connectTick();return obConn()}return S.osp==='snap'?obSnap():obPath()}
+document.addEventListener('click',ev=>{const b=ev.target.closest('[data-a]');if(!b)return;const a=b.dataset.a,D=b.dataset;
+if(a=='sp'){S.sp=D.v;S.osp='intro';S.oc=0;S.ob=0;render()}
+else if(a=='qsel'){(S.obd=S.obd||{})[D.k]=D.v;render()}
+else if(a=='qback'){if(S.ob<=0)S.sp=null;else S.ob--;render()}
+else if(a=='qnext'){const k=NOB[S.ob][1],o=NOB[S.ob][2];if(k=='audience'){const t=($('#au')?.value||'').trim();if(!t){toast('Add who you want to reach to continue.');return}(S.obd=S.obd||{}).audience=t}else if(o&&o.includes('Other')&&$('#oth')){const t=($('#oth')?.value||'').trim();if(!t){toast('Type your own answer to continue.');return}(S.obd=S.obd||{})[k]=t}if(!(S.obd||{})[k]){toast('Choose one to continue.');return}S.ob++;render()}
+else if(a=='conn'){S.osp='conn';S.oc=0;render();connectTick()}
+else if(a=='snap'){S.osp='snap';render()}
+else if(a=='manual'){finishOnboarding();go('exp');newexp()}
+else if(a=='buildfirst'){finishOnboarding(true);startFirst();go('first')}
+else if(a=='enterws'){finishOnboarding();go('exp')}});
+V.home=()=>{const c=S.creator,n=nextExp(),L=learnings(),s=stats(),h=new Date().getHours(),g=h<12?'Good morning':h<18?'Good afternoon':'Good evening',goal=c.goal,brand=/brand|Monetize/.test(goal);
+if(!done().length)return`<div class="wrap"><span class="tag">Getting started</span><h1 style="margin:.6rem 0 .4rem">${g}, ${c.name}.</h1><h2 class="mut" style="margin:.4rem 0 1.6rem">Your first experiment starts here.</h2>
+<div class="hl" style="max-width:42rem"><h3>No measured results yet</h3><p>Creator Lab learns from what you publish. Create an experiment, add its results, and we'll help you separate what you know from what you suspect.</p><p style="margin-top:1rem"><button class="btn" data-a="newexp">New experiment</button> <button class="btn alt" data-a="gen">Generate next experiment</button> <a class="btn alt" href="#studio" style="text-decoration:none;display:inline-block">AI Idea Studio</a></p></div>
+${S.exps.length?`<h3 style="margin:2rem 0 .5rem">Waiting for results</h3>${[...S.exps].reverse().map(e=>`<div class="row"><span><b>${e.title}</b><br><span class="small mut">${e.date} · ${e.format} · ${e.variable}</span></span><span class="tag y">Awaiting results</span></div>`).join('')}`:''}</div>`;
+const nx=`<div class="hl"><h3>Your next experiment</h3><h2 style="margin:.5rem 0">${n.title}</h2><p><b>Why:</b> ${n.evidence}</p><p class="small mut">Testing: ${n.variable} · Confidence ${n.conf}%</p><button class="btn" data-a="runnext">Run this experiment</button></div>`;
+return`<div class="wrap"><h1>${g}, ${c.name}.</h1><h2 class="mut" style="margin:.5rem 0 1.5rem">Your audience is teaching you something.</h2><p style="font-size:1.15rem;max-width:40rem">Your best post, “${s.best.title}”, saved at ${pct(s.best.saves,s.best.views)} — ${x(s.best.saves,s.ms)} your median saves.</p>
+${protoNote()}
+<div class="split" style="margin-top:2rem"><div>${brand?`<div class="hl" style="margin-bottom:1.5rem"><h3>Your goal: ${goal}</h3><p>Proof and Opportunities lead for you.</p><a class="btn sm" href="#opp" style="text-decoration:none;display:inline-block">See opportunities</a></div>`:''}${nx}<div class="hl" style="margin-top:1.5rem;max-width:34rem"><span class="pchip" style="background:#fff">AI Idea Studio</span><p style="margin:.7rem 0 .8rem">Fresh ideas built from what your audience is teaching you.</p><a class="btn alt sm" href="#studio" style="text-decoration:none;display:inline-block">Open AI Idea Studio</a></div><h3 style="margin:2rem 0 .6rem">What you're learning</h3><div class="three"><div class="know col"><b>We know</b><ul>${L.know.map(t=>`<li>${t}</li>`).join('')}</ul></div><div class="susp col"><b>We suspect</b><ul>${L.susp.map(t=>`<li>${t}</li>`).join('')}</ul></div><div class="unk col"><b>We don't know yet</b><ul>${L.unk.map(t=>`<li>${t}</li>`).join('')}</ul></div></div></div>
+<aside><h3>Your creator momentum</h3>${[['Experiments completed',done().length],['Learning loops',done().filter(e=>e.an).length+' analysed'],['Proof items',S.proofs.length],['Collaborations',S.collabs.filter(c=>c.status).length],['Applications',S.opps.filter(o=>o.stat).length]].map(r=>`<div class="row"><span>${r[0]}</span><b class="big" style="font-size:1.4rem">${r[1]}</b></div>`).join('')}<p class="small mut">Monetization readiness: ${s.best?`evidence in ${s.best.topic} (${s.best.format})`:'no measured evidence yet'}; no completed campaign yet.</p></aside></div>
+<h3 style="margin:2rem 0 .5rem">Recent experiments</h3><div class="strip">${[...S.exps].reverse().map((e,i)=>card(e,i)).join('')}</div></div>`};
+V.exp=id=>{if(id){const e=S.exps.find(z=>z.id==id);if(!e)return'<div class="wrap">Experiment not found.</div>';const a=e.an,st=ST.indexOf(e.status);return`<div class="wrap"><a href="#exp">← Experiments</a><h1 style="margin:.5rem 0">${e.title}</h1>${protoFlag(e)}<div class="tl">${ST.map((s,i)=>`<span class="${i<=st?'on':''}">${s}</span>`).join('')}</div>
+<div class="split" style="margin-top:1.5rem"><div><div class="paper"><p><b>Hypothesis:</b> ${e.hyp}</p><p><b>Variable tested:</b> ${e.variable}</p><p><b>Hook:</b> “${e.hook}”</p><p class="small mut">${e.format} · ${e.platform||S.creator.platform} · ${e.aud} · ${e.topic} / ${e.sub}</p></div>
+${e.views?`<div class="row" style="margin-top:1rem"><span>Views <b>${e.views.toLocaleString()}</b></span><span>Likes <b>${e.likes}</b></span><span>Comments <b>${e.comments}</b></span><span>Saves <b>${e.saves}</b></span><span>Shares <b>${e.shares}</b></span><span>Followers <b>+${e.gained}</b></span></div><p class="small mut">Save rate ${pct(e.saves,e.views)} · share rate ${pct(e.shares,e.views)} · follower conversion ${pct(e.gained,e.views)}</p>`:''}
+<p style="margin-top:1rem"><button class="btn alt" data-a="results" data-id="${e.id}">${e.views?'Edit':'Add'} performance results</button> ${e.views?`<button class="btn" data-a="analyze" data-id="${e.id}">Analyze performance</button>`:''} ${e.status!='Learned'&&!e.views?`<button class="btn alt" data-a="adv" data-id="${e.id}">Mark ${ST[Math.min(st+1,3)]}</button>`:''}</p></div>
+<div>${a?`<div class="know col"><b>What we know</b><ul>${a.observed.map(t=>`<li>${t}</li>`).join('')}</ul></div><div class="susp col"><b>What we suspect</b><ul>${(a.likely.length?a.likely:['Nothing conclusive.']).map(t=>`<li>${t}</li>`).join('')}</ul></div><div class="unk col"><b>What we don't know yet</b><ul>${a.unknown.map(t=>`<li>${t}</li>`).join('')}</ul></div><div class="hl"><b>What to test next</b><p>${a.next}</p><p class="small">How confident we are: ${a.conf}</p></div>`:'<p class="mut">Add results, then analyze, to see what we know and don\'t know.</p>'}</div></div></div>`}
+const act=S.exps.find(e=>!e.views);return`<div class="wrap"><h1>Experiment with intention.</h1><p class="mut">Every post is a test. Every result teaches you something.</p>${protoNote()}<p><button class="btn" data-a="newexp">New experiment</button> <button class="btn alt" data-a="gen">Generate next experiment</button> <a class="btn alt" href="#studio" style="text-decoration:none;display:inline-block">AI Idea Studio</a></p>
+<p class="small mut" style="margin-top:-.4rem">AI Idea Studio — fresh ideas built from what your audience is teaching you.</p>
+${act?`<div class="hl"><h3>Active experiment</h3><h2>${act.title}</h2><p>${act.hyp} Testing: ${act.variable}.</p><a href="#exp/${act.id}">Open</a></div>`:''}
+<h3 style="margin:1.5rem 0 .5rem">History</h3>${S.exps.length?[...S.exps].reverse().map(e=>`<a class="row" href="#exp/${e.id}" style="text-decoration:none;color:inherit"><span><b>${e.title}</b><br><span class="small mut">${e.date} · ${e.format} · ${e.variable}</span></span><span>${e.views?`${f(e.views)} views · ${e.saves} saves · +${e.gained}`:'<span class="tag y">Awaiting results</span>'} ${perf(e)}</span></a>`).join(''):'<div class="hl"><h3>Your first experiment starts here.</h3><button class="btn" data-a="newexp">Create your first experiment</button></div>'}</div>`};
+function perf(e){if(!e.views||done().length<3)return'';const r=e.saves/e.views,m=med(done().map(z=>z.saves/z.views));return r>m*1.3?'<span class="tag g">Very strong</span>':r<m*.8?'<span class="tag r">Below usual</span>':'<span class="tag">Baseline</span>'}
+V.learn=()=>{const L=learnings(),d=done(),fm={};d.forEach(e=>{(fm[e.format]=fm[e.format]||[]).push(e)});return`<div class="wrap"><h1>Your audience is teaching you something.</h1><p class="mut">Everything here is computed from your ${d.length} measured experiments.</p>${protoNote()}<div class="three" style="margin-top:1.5rem"><div class="know col"><h3>We know</h3><ul>${L.know.map(t=>`<li>${t}</li>`).join('')}</ul></div><div class="susp col"><h3>We suspect</h3><ul>${L.susp.map(t=>`<li>${t}</li>`).join('')}</ul></div><div class="unk col"><h3>We don't know yet</h3><ul>${L.unk.map(t=>`<li>${t}</li>`).join('')}</ul><button class="btn sm" data-a="gen">Turn one into an experiment</button></div></div>
+<h3 style="margin:2rem 0 .5rem">Learning profile</h3>${d.map(e=>{const m=Math.round(100*e.saves/Math.max(...d.map(z=>z.saves)));return`<div style="margin:.6rem 0"><div class="row" style="border:0;padding:0"><span>${e.topic} — ${e.title}</span><span>${e.saves} saves</span></div><div class="bar"><i style="width:${m}%"></i></div></div>`}).join('')}</div>`};
+V.collabList=()=>{if(!personalEvidence())return`<div class="wrap"><h1>Find creators who make your audience overlap matter.</h1><div class="hl" style="max-width:44rem;margin-top:1.4rem"><p>Your collaboration matches will appear once we have some evidence about your content and audience.</p><p class="mut" style="margin-top:.5rem">Creator Lab needs a few of your own experiments with results first — it can't judge audience overlap or collaboration fit without creator-specific evidence.</p></div><p style="margin-top:1.4rem"><a class="btn" href="#exp" style="text-decoration:none;display:inline-block">Add your first experiment</a></p></div>`;return`<div class="wrap"><h1>Find creators who make your audience overlap matter.</h1><p class="mut">Matched on audience overlap and complementary niche, not follower count. Overlap figures are illustrative prototype data.</p>${S.collabs.map(c=>`<div class="paper" style="margin:1rem 0"><div class="row" style="border:0"><h3><a href="#collab/${c.id}" style="color:inherit">${c.name}</a></h3><span class="big">${c.overlap}%</span></div><p><b>Idea:</b> ${c.idea}</p><p class="mut">${c.why}</p>${!c.status?`<button class="btn" data-a="propose" data-id="${c.id}">Propose collaboration</button>`:`<div class="tl">${['Proposed','Accepted','Planning','Creating','Published','Measuring','Learned'].map((s,i)=>`<span class="${i<=['Proposed','Accepted','Planning','Creating','Published','Measuring','Learned'].indexOf(c.status)?'on':''}">${s}</span>`).join('')}</div><p><button class="btn sm" data-a="cadv" data-id="${c.id}">${c.status=='Learned'?'Done':c.status=='Proposed'?'Simulate: they accept':'Move to next stage'}</button> ${c.status=='Proposed'?`<button class="btn alt sm" data-a="cdec" data-id="${c.id}">Simulate: they decline</button>`:''}</p>`}</div>`).join('')}</div>`;}; 
+V.proof=()=>{const s=stats(),c=S.creator,d=done(),top=(k,l)=>{const e=[...d].sort((a,b)=>b[k]-a[k])[0];return`<div class="row"><span>${l}</span><a href="#exp/${e.id}">${e.title}</a><b>${f(e[k])}</b></div>`},conv=()=>{const es=d.filter(e=>Number.isFinite(+e.views)&&+e.views>0&&Number.isFinite(+e.gained)&&+e.gained>=0);if(!es.length)return`<div class="row"><span>Best follower conversion</span><span class="mut">Not enough views to compute follower conversion yet</span></div>`;const e=es.sort((a,b)=>(+b.gained/+b.views)-(+a.gained/+a.views))[0];return`<div class="row"><span>Best follower conversion</span><a href="#exp/${e.id}">${e.title}</a><b>${followerConversion(e)} <span class="small mut" style="font-weight:400">+${e.gained} followers · ${f(e.views)} views</span></b></div>`};if(!d.length)return`<div class="wrap"><h1>Show what you can prove.</h1><p class="mut">Turn your strongest experiments into evidence of your creator value.</p><div class="hl" style="max-width:42rem"><h3>No evidence yet</h3><p>Add results to at least one experiment and Creator Lab turns it into proof you can share.</p><p style="margin-top:.9rem"><a class="btn" href="#exp" style="text-decoration:none;display:inline-block">Go to experiments</a></p></div></div>`;return`<div class="wrap"><h1>Show what you can prove.</h1><p class="mut">Turn your strongest experiments into evidence of your creator value.</p>${protoNote()}<p><button class="btn" data-a="report">Generate report</button> <button class="btn alt" data-a="share">Share proof</button> <button class="btn alt" data-a="proofnew">Create proof</button></p>
+<div class="paper"><h2>${c.name}</h2><p>${c.niche} · ${c.platform} · ${c.audience}${c.followers?` · ${c.followers.toLocaleString()} followers`:''} · median reach ${f(s.mv)} views</p></div><h3 style="margin:1.5rem 0 .3rem">Proof library</h3>${top('views','Highest reach')}${top('saves','Highest saves')}${top('shares','Highest shares')}${conv()}
+<h3 style="margin:1.5rem 0 .3rem">Case studies</h3>${S.proofs.length?S.proofs.map(p=>{const e=S.exps.find(z=>z.id==p.eid);return`<div class="paper" style="margin:.8rem 0"><h3>${e.title}</h3><p>Goal: ${e.goal||c.goal}. Audience: ${e.aud}. Hypothesis: ${e.hyp}</p><p><b>${f(e.views)}</b> views · <b>${e.saves}</b> saves · <b>${e.shares}</b> shares · <b>+${e.gained}</b> followers</p><p class="mut">Why it matters: ${p.learn}</p></div>`}).join(''):'<div class="hl"><h3>You haven\'t built your proof library yet.</h3><button class="btn" data-a="proofnew">Create proof</button></div>'}
+<h3 style="margin:1.5rem 0 .3rem">Brand fit & readiness</h3><div class="three"><div class="know col"><b>${d.length<=2?'Early evidence':'Measured evidence'}</b><p>${s.best?`${s.best.topic}; ${s.best.format}; ${c.audience||'your audience'}. Current strongest signal: ${pct(s.best.saves,s.best.views)} save rate on ${s.best.title}.${d.length<=2?' More experiments are needed before treating this as a reliable performance pattern.':''}`:'Not enough measured results yet.'}</p></div><div class="unk col"><b>Evidence still needed</b><p>A measured brand campaign; audience demographics; collaboration results.</p></div><div class="susp col"><b>Honest note</b><p>We can't predict income. Readiness grows with measured campaigns.</p></div></div></div>`};
+V.opp=()=>`<div class="wrap"><h1>Brands where your evidence fits.</h1><p class="mut">Illustrative sample opportunities; match is based on your experiments, not follower count.</p><div class="three">${[...S.opps].sort((a,b)=>b.match-a.match).map((o,i)=>`<div class="paper"><div class="thumb" style="aspect-ratio:16/8;background:${COL[i%4]}">${o.camp}</div><p><span class="big">${o.match}%</span> match</p><b>${o.brand}</b><p class="small mut">${o.deliv} · ${o.pay} · due ${o.due}</p><p class="small">${oppWhy(o)}</p><button class="btn sm" data-a="pitch" data-id="${o.id}">Generate pitch</button> ${o.stat?`<button class="btn alt sm" data-a="oadv" data-id="${o.id}">${o.stat} →</button>`:`<button class="btn alt sm" data-a="apply" data-id="${o.id}">Apply</button>`}</div>`).join('')}</div></div>`;
+let chat=[];V.coach=()=>`<div class="wrap" style="max-width:720px"><h1>Your growth coach</h1><p class="chips">${['Why did my last Reel perform better?','What should I test next?','What have we learned so far?','Am I ready for brand collaborations?','Give me 20 generic viral ideas'].map(q=>`<button class="chip" data-a="ask" data-q="${q}">${q}</button>`).join('')}</p>${chat.map(m=>`<div class="${m.r=='u'?'':'hl'}" style="margin:.8rem 0;${m.r=='u'?'text-align:right':''}">${m.t}</div>`).join('')}<div style="display:flex;gap:.5rem"><input id="q" placeholder="Ask about your content"><button class="btn" data-a="askin" style="height:2.8rem">Ask</button></div></div>`;
+V.me=()=>`<div class="wrap" style="max-width:640px"><h1>Settings</h1><p>${S.creator.name} · ${S.creator.niche} · ${S.creator.platform} · ${S.creator.goal}</p><h3 style="margin-top:1.5rem">Theme</h3><div class="chips">${TH.map(t=>`<button class="chip ${S.theme==t?'on':''}" data-a="theme" data-v="${t}">${t[0].toUpperCase()+t.slice(1)}</button>`).join('')}</div><p class="small mut">${AIOK?'Growth intelligence connected':'Demo intelligence — the backend isn\'t reachable from this page, so insights come from built-in rules.'}</p><button class="btn alt" data-a="out">Log out</button></div>`;
+
+V.collab=id=>{if(!id||!personalEvidence())return V.collabList();const c=S.collabs.find(z=>z.id==id);if(!c||!c.status)return'<div class="wrap"><a href="#collab">← Collaborate</a><h2>Propose this collaboration first.</h2></div>';const L=['Proposed','Accepted','Planning','Creating','Published','Measuring','Learned'],i=L.indexOf(c.status),r=c.res&&S.exps.find(e=>e.id==c.res);
+return`<div class="wrap"><a href="#collab">← Collaborate</a><h1 style="margin:.4rem 0">${c.idea}</h1><div class="tl">${L.map((t,j)=>`<span class="${j<=i?'on':''}">${t}</span>`).join('')}</div><div class="split" style="margin-top:1.5rem"><div><p><b>Participants:</b> ${S.creator.name} and ${c.name}</p><p><b>Audience overlap:</b> ${c.overlap}% (illustrative)</p><p><b>Why it fits:</b> ${c.why}</p><p><b>Format:</b> ${S.creator.platform} Reel · <b>Responsibilities:</b> ${S.creator.name} styling and edit; ${c.name} the matching look.</p><p>${i<6?`<button class="btn" data-a="cadv" data-id="${c.id}">Move to ${L[Math.min(i+1,6)]}</button> `:''}${i>=4&&!c.res?`<button class="btn alt" data-a="cres" data-id="${c.id}">Record results</button>`:''}</p></div><div>${r?`<div class="know col"><b>Results</b><p>${f(r.views)} views · ${r.saves} saves · ${r.shares} shares. Now counted in Learnings, Proof and your report.</p></div>`:'<p class="mut">Results appear here once recorded and feed your learning profile.</p>'}</div></div></div>`};
+V.pub=()=>{const c=S.creator,s=stats(),d=done();if(!d.length)return`<div class="wrap" style="max-width:760px"><a href="#proof">← Back</a><h1>${c.name}</h1><p>${c.niche} · ${c.platform} · ${c.audience}</p><div class="hl"><b>Nothing to show yet</b><p>Once an experiment has results, your strongest proof appears here.</p></div></div>`;return`<div class="wrap" style="max-width:760px"><a href="#proof">← Back</a><h1>${c.name}</h1><p>${c.niche} · ${c.platform} · ${c.audience}</p><div class="hl"><b>Strongest proof</b><p>${s.best.title}: ${f(s.best.views)} views, ${s.best.saves} saves, ${s.best.shares} shares, +${s.best.gained} followers.</p></div><h3 style="margin:1.5rem 0 .4rem">What I know works</h3><ul>${learnings().know.map(t=>`<li>${t}</li>`).join('')}</ul><h3>Measured work</h3>${d.map(e=>`<div class="row"><span>${e.title}</span><span>${f(e.views)} views · ${e.saves} saves</span></div>`).join('')}<p class="small mut">This view leaves out email and account details. It is local to this browser until the app is hosted.</p></div>`};
+function resModal(kind,id){S.modal=`<div class="modal"><div><h3>${kind=='camp'?'Campaign results':'Collaboration results'}</h3><p class="small mut">Clicks are optional.</p>${[['views','Views'],['likes','Likes'],['comments','Comments'],['saves','Saves'],['shares','Shares'],['clicks','Link clicks (optional)']].map(k=>`<label for="g_${k[0]}">${k[1]}</label><input type="number" min="0" id="g_${k[0]}">`).join('')}<button class="btn" data-a="savegen" data-kind="${kind}" data-id="${id}">Save results</button> <button class="btn alt" data-a="close">Cancel</button></div></div>`;render()}
+document.addEventListener('click',ev=>{const b=ev.target.closest('[data-a]');if(!b)return;const a=b.dataset.a,id=+b.dataset.id,g=k=>+document.querySelector('#g_'+k)?.value||0;
+if(a=='cres')resModal('collab',id);
+if(a=='savegen'){const camp=b.dataset.kind=='camp',o=camp?S.opps.find(z=>z.id==id):S.collabs.find(z=>z.id==id);if(!g('views')){toast('Add at least views.');return}
+const e={id:Date.now(),title:camp?'Campaign: '+o.camp:'Collab: '+o.idea,topic:camp?(o.cat=='Fashion'?'Affordable Fashion':o.cat):'Collaboration',sub:camp?'Brand campaign':'Creator collab',aud:S.creator.audience,format:'Reel',hook:'',hyp:camp?'Brand-fit content performs for this audience.':'Complementary creators extend reach.',variable:camp?'Brand integration':'Collaboration',views:g('views'),likes:g('likes'),comments:g('comments'),saves:g('saves'),shares:g('shares'),gained:0,clicks:g('clicks'),date:new Date().toISOString().slice(0,10),status:'Learned',an:null,src:camp?'campaign':'collab'};
+S.exps.push(e);if(camp)o.stat='Completed';else{o.res=e.id;o.status='Learned'}S.modal=null;render();toast('Saved. Learnings, Proof and your report now include this.')}});
+
+let AIOK=false;fetch('/api/status').then(r=>r.json()).then(j=>{AIOK=!!j.ai;render()}).catch(()=>{});
+ const LOAD={'next-experiment':'Finding your next useful test…','analyze-performance':'Comparing this post with your previous experiments…',coach:'Looking across your creator history…','generate-pitch':'Building a pitch around your strongest evidence…','idea-studio':'Gathering ideas from your learning profile…'};
+ const ctxAll=()=>({creator:S.creator,experiments:S.exps.filter(e=>e.views),unmeasured:S.exps.filter(e=>!e.views).map(e=>e.title),existingExperiments:S.exps.slice(0,40).map(e=>({title:e.title||'',topic:e.topic||'',sub:e.sub||'',hook:e.hook||'',format:e.format||'',hypothesis:e.hyp||'',variable:e.variable||'',status:e.status||'',measured:!!e.views,views:e.views||0,saves:e.saves||0})),learnings:learnings(),proofs:S.proofs,collaborations:S.collabs.filter(c=>c.status),campaigns:S.opps.filter(o=>o.stat)});
+async function withAI(task,extra,q,ok,demo,op){op=op||{};if(!op.quiet)S.modal=`<div class="modal" role="dialog" aria-live="polite"><div><h3>${LOAD[task]}</h3><div class="bar"><i style="width:55%"></i></div></div></div>`;render();window._ai={retry:()=>withAI(task,extra,q,ok,demo,op),demo};
+try{const c=new AbortController(),t=setTimeout(()=>c.abort(),25000);const r=await fetch('/api/ai/'+task,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({context:op.ctx||{...ctxAll(),...extra},question:q}),signal:c.signal});clearTimeout(t);const j=await r.json();if(!r.ok||!j.data)throw 0;S.modal=null;ok(j.data);render()}
+catch(e){if(op.onFail)op.onFail();else S.modal=`<div class="modal" role="dialog"><div><h3>We couldn't reach growth intelligence right now.</h3><p class="mut">Try again, or continue with demo insights built from your data.</p><button class="btn" data-a="retryai">Try again</button> <button class="btn alt" data-a="demoai">Continue with demo insights</button></div></div>`;render()}}
+const mapNext=d=>({title:d.title,hook:d.hook,format:d.format,hyp:d.hypothesis,variable:d.variableTested,aud:d.targetAudience,goal:d.goal,evidence:[].concat(d.evidence||[]),unk:[].concat(d.unknowns||[]),conf:Number(d.confidence)||0,effort:d.estimatedEffort,real:1});
+function showNext(n){window._n=n;if(n&&n.title){const L=S.seenNext||(S.seenNext=[]);if(!L.some(s=>normS(s.title)===normS(n.title)))L.push({title:n.title,hook:n.hook,format:n.format,variable:n.variable});if(L.length>20)L.splice(0,L.length-20)}const arr=v=>[].concat(v==null||v===''?[]:v);S.modal=`<div class="modal" role="dialog"><div><span class="pchip" style="background:var(--soft)">${n.real?'From your evidence':'Local next test'}</span><h2 style="margin:.7rem 0 .3rem">${n.title}</h2><p class="small mut" style="margin-top:0">${n.format||''}${n.aud?' · '+n.aud:''}${n.effort?' · '+n.effort:''}</p>
+ <div class="evid"><div class="box obs rev"><b>Observed</b>${arr(n.evidence).map(t=>`<p style="margin:.35rem 0">${t}</p>`).join('')||'<p style="margin:.35rem 0">No measured result for this yet.</p>'}</div>
+ <div class="box lik rev" style="animation-delay:.1s"><b>Likely · why this test</b><p style="margin:.35rem 0">${n.hyp}</p><p style="margin:.35rem 0">Hook: “${n.hook}”</p></div>
+ <div class="box unk rev" style="animation-delay:.2s"><b>Unknown</b>${arr(n.unk).map(t=>`<p style="margin:.35rem 0">${t}</p>`).join('')}</div>
+ <div class="box nxt rev" style="animation-delay:.3s"><b>Next test</b><p style="margin:.35rem 0">Change one variable: ${n.variable}</p><p class="small mut" style="margin:.35rem 0">Confidence ${n.conf}% — how well this fits your evidence, not a prediction of results.</p></div></div>
+ <p class="small mut">${n.real?'Designed by growth intelligence from your measured experiments.':'Demo insight built locally from your data — not AI-generated.'} Results remain uncertain.</p>
+ <button class="btn" data-a="acceptnext">Save as experiment</button> <button class="btn alt" data-a="close">Not now</button></div></div>`}
+function nextGen(dup){
+ const pend=shownPending(),extra=pend.length?{shownSuggestions:pend}:{};
+ const q=dup?`Your earlier suggestion was a near-duplicate ("${dup.title||dup}"). Existing experiments and any previously shown suggestions that were not saved are exclusion candidates — do not repeat or near-duplicate any existing title, topic, hook, format, hypothesis or variable. Propose a genuinely different next test on an untested or insufficiently tested variable.`:null;
+ withAI('next-experiment',extra,q,d=>{const n=mapNext(d),hit=dupNext(n)||pend.find(s=>sameExp(n,s));if(hit){if(q){showNext(localNext())}else nextGen(hit)}else showNext(n)},()=>showNext(localNext()))}
+const IDEA_INTENTS=['Grow my audience','Increase saves/shares','Build consistency','Explore a new topic','Create brand-relevant content','Try something different'];
+let ideas=[],ideaIntent='',ideaBusy=false,ideaNote='',ideaDrop=0,ideaSrc=null;
+const ideaThin=()=>!done().length;
+const asRef=i=>({title:i.title,hook:i.hook,format:i.format,variable:i.tests});
+const dupIdea=(ref,list)=>(list||S.exps).some(e=>e&&sameExp(ref,e));
+function filterIdeas(list){const kept=[];let dropped=0;for(const it of list){const ref=asRef(it);if(dupIdea(ref)||kept.some(k=>sameExp(ref,asRef(k)))){dropped++;continue}kept.push(it)}kept.forEach((k,i)=>k.id='idea'+i);return{kept,dropped}}
+function ideaCtx(){const c=S.creator,d=done(),L=learnings(),s=stats(),ranked=[...d].sort((a,b)=>(b.saves/Math.max(1,b.views))-(a.saves/Math.max(1,a.views)));
+ return{creator:{name:c.name||'',niche:c.niche||'',audience:c.audience||'',platform:c.platform||'',stage:c.stage||'',goal:c.goal||''},
+ intent:ideaIntent,
+ shownIdeas:(S.seenIdeas||[]).slice(-10),
+ evidenceStatus:d.length?`${d.length} measured experiments with views, saves and shares.`:'No measured experiments yet — onboarding answers only.',
+ experiments:S.exps.slice(0,40).map(e=>({title:e.title||'',topic:e.topic||'',format:e.format||'',hook:e.hook||'',hypothesis:e.hyp||'',variable:e.variable||'',status:e.status||'',measured:!!e.views,views:e.views||0,saves:e.saves||0,shares:e.shares||0,prototypeSample:e.src==='proto'})),
+ successfulTopics:ranked.slice(0,3).map(e=>({topic:e.topic,format:e.format,saveRate:pct(e.saves,e.views)})),
+ successfulHooks:ranked.slice(0,3).map(e=>e.hook).filter(Boolean),
+ weakest:[...d].sort((a,b)=>(a.saves/Math.max(1,a.views))-(b.saves/Math.max(1,b.views))).slice(0,2).map(e=>({title:e.title,format:e.format,saveRate:pct(e.saves,e.views)})),
+ learnings:L,medianViews:f(s.mv),medianSaves:String(s.ms),
+ dataNote:'Prototype sample data is demonstration data, not imported account data.'}}
+const mapIdeas=d=>[].concat(d.ideas||[]).map(o=>({src:'ai',title:String(o.title),hook:String(o.hook),format:String(o.format),angle:String(o.angle),whyFit:String(o.whyFit),tests:String(o.tests),evidence:String(o.evidence),effort:String(o.effort),novelty:String(o.novelty)}));
+function localIdeas(){
+ const c=S.creator,d=done(),L=learnings(),s=stats(),thin=!d.length;
+ const best=s.best,T=topicsFor(c.niche),tested=[...new Set(d.map(e=>e.format))],altFmt=fmtFor(c.platform||'Instagram').find(z=>!tested.includes(z));
+ const ev=thin?'Onboarding answers only — no measured results yet, so treat every idea as a hypothesis.':[best?`"${best.title}" has your strongest save rate (${pct(best.saves,best.views)} of views).`:'',L.know[0]?`What your data shows: ${L.know[0]}`:'',`Median across ${d.length} measured experiments: ${f(s.mv)} views, ${s.ms} saves.`,L.susp[0]?`Suspected: ${L.susp[0]}`:''].filter(Boolean).join(' ');
+ const hy=thin?' Hypothesis-driven: built from your onboarding answers only.':'';
+ const mk=(title,hook,format,angle,whyFit,tests,effort,novelty)=>({title,hook,format,angle,whyFit,tests,evidence:ev,effort,novelty});
+ const pool=[];
+ if(altFmt&&best)pool.push(mk(`First ${altFmt} test: “${best.title}”, new container`,'Same idea, different format — watch what changes.',altFmt,`Rebuild the framing that already earns saves for a format you have never measured.`,`Your measured work sits in ${tested.join(', ')}, so a first ${altFmt} test separates the format from the idea itself.`,`First test in ${altFmt} (new format vs your usual ${best.format})`,'About 1–2 hours',`New — none of your ${d.length} experiments use ${altFmt}.`+hy));
+ pool.push(mk(`${T[3%T.length]}: question-first opening`,c.audience?`Be honest — which of these have you actually tried?`:'Which one have you actually tried?',best?best.format:'Reel','Open with a question instead of a statement; keep topic, format and audience fixed.',`Question openings do not appear in your ${d.length} experiments, so this isolates prompt style from your usual opening.`,'Hook framing (question-first vs your usual opening)','About 1 hour',`New — your measured experiments open with statements, not questions.`+hy));
+ if(L.unk[0])pool.push(mk(`${T[4%T.length]}: the version you haven't tested`,'Save this — it answers something your other posts leave open.',altFmt||'Carousel','Take one unknown from your learning profile and answer it in a single post.',`Your learning profile lists what you still don't know; this turns one of those unknowns into a measured test.`,L.unk[0],'About 1–2 hours','New — this addresses an unknown instead of repeating a measured result.'+hy));
+ pool.push(mk(`${T[5%T.length]}: save prompt in the first three seconds`,'Everything you need is on screen — save it for later.',best?best.format:'Reel','Keep your usual content but move an explicit save prompt into the opening.','Saves are how your strongest work is measured, and prompting for a save has never been the variable in your history.','Save prompt placement (first 3 seconds vs no prompt)','About 1 hour','New — no experiment has tested a save prompt.'+hy));
+ pool.push(mk(`Two weeks of ${T[1%T.length]} on a fixed slot`,'Same slot, twice a week, for two weeks.',best?best.format:'Reel','Hold the content constant and change only when you publish.','Your experiments vary content but never cadence, so consistency itself is untested.','Publishing cadence (fixed slot vs whenever you post)','Low — about 30 minutes per post','New — publishing cadence has never been the variable.'+hy));
+ pool.push(mk(`3-part series: ${T[2%T.length]}, part one`,'Part one of three — the rest follows this week.',best?best.format:'Reel','Cut one idea into a numbered series and publish the parts in order.','Series structure is untested in your data and directly exercises the consistency direction.','Series structure (3-part series vs standalone post)','About 2–3 hours','New — no series has been published or measured.'+hy));
+ pool.push(mk(`${T[0%T.length]}: what I got wrong first`,'I did this wrong for months — here is the fix.',best?best.format:'Reel','An honest correction framed as advice, on a topic you already measure.','Your recaps earn trust; a correction framing is a different angle, not a repeat of an existing post.','Framing angle (correction vs recap)','About 1 hour','New — no correction-framed post in your history.'+hy));
+ return pool}
+ function genIdeas(){
+ if(!S.me){toast('Please log in to use AI Idea Studio.');return}
+ if(ideaBusy)return;
+ if(!ideaIntent){toast('Choose a direction first.');return}
+ ideaBusy=true;ideaDrop=0;render();
+ const finish=(list,note,src)=>{
+  const seen0=S.seenIdeas||[];
+  const fresh=(src==='ai'&&seen0.length)?list.filter(i=>!seen0.some(s=>sameExp(asRef(i),s))):list;
+  const seenDropped=list.length-fresh.length;
+  const {kept,dropped}=filterIdeas(fresh);
+  let fin=kept.slice(0,5);
+  if(fin.length<5){
+   const pool=localIdeas(),seen=S.seenIdeas||[];
+   const seenOk=i=>seen.every(s=>!sameExp(asRef(i),s));
+   for(const i of pool){if(fin.length>=5)break;if(fin.some(f=>sameExp(asRef(i),asRef(f)))||dupIdea(asRef(i)))continue;if(!seenOk(i))continue;fin.push(i)}
+   for(const i of pool){if(fin.length>=5)break;if(fin.some(f=>sameExp(asRef(i),asRef(f)))||dupIdea(asRef(i)))continue;fin.push(i)}
+  }
+  fin.forEach((k,i)=>k.id='idea'+i);
+  ideas=fin;ideaDrop=dropped+seenDropped;ideaSrc=src;ideaNote=ideaThin()?'I don\'t have enough evidence to personalize this strongly yet.':(note||'Built from your measured experiments and learning profile.');
+  const L=S.seenIdeas||(S.seenIdeas=[]);fin.forEach(it=>{const r=asRef(it);if(!L.some(s=>normS(s.title)===normS(r.title)))L.push(r)});while(L.length>12)L.shift();
+  ideaBusy=false;render()};
+ const prev=(S.seenIdeas||[]).slice(-10);
+ const fresh=prev.length?` Do not repeat or near-duplicate these ideas you were already shown: ${prev.map(s=>'"'+(s.title||'')+'"').join(', ')}.`:'';
+ withAI('idea-studio',null,`Creator direction: "${ideaIntent}". Generate 5 fresh, different ideas. Existing experiments in the data are exclusion candidates.${fresh}`,d=>finish(mapIdeas(d),d.note,'ai'),()=>finish(localIdeas(),'Generated locally from your data — growth intelligence is unavailable, so these are starting points rather than AI-written ideas.','local'),{ctx:ideaCtx()})}
+function ideaCard(it,i,thin){return`<article class="idea${i%2?' alt':''}" style="animation:u .55s both;animation-delay:${(i*.07).toFixed(2)}s">
+ <div class="idea-top"><span class="pchip" style="background:var(--soft)">Idea ${i+1}</span><span class="tag${thin?'':' g'}">${thin?'Hypothesis-driven':'Grounded in your data'}</span><span class="small mut">${it.format||''}${it.effort?' · '+it.effort:''}</span></div>
+ <h3>${it.title}</h3><p class="hook">“${it.hook}”</p>
+ <div class="evid">
+ <div class="box ang"><b>Creative angle</b><p style="margin:.35rem 0">${it.angle}</p></div>
+ <div class="box obs"><b>Why this fits you</b><p style="margin:.35rem 0">${it.whyFit}</p></div>
+ <div class="box lik"><b>What it tests</b><p style="margin:.35rem 0">${it.tests}</p></div>
+ <div class="box unk"><b>Evidence used</b><p style="margin:.35rem 0">${it.evidence}</p></div>
+ <div class="box nov"><b>Novelty</b><p style="margin:.35rem 0">${it.novelty}</p></div></div>
+ <p style="margin:.9rem 0 0"><button class="btn" data-a="ideaexp" data-i="${i}">Turn into experiment</button> <span class="small mut">Opens the experiment form prefilled — nothing is created until you save.</span></p></article>`}
+V.studio=()=>{const thin=ideaThin();
+ let h=`<div class="wrap studio"><p class="small" style="margin-bottom:.3rem"><a href="#home" class="mut">← Home</a></p><h1 style="margin:.2rem 0 .4rem">AI Idea Studio</h1><p class="mut" style="max-width:34rem;font-size:1.08rem">Fresh ideas built from what your audience is teaching you.</p>${protoNote()}
+ <div class="ideaint"><span class="flab">What are you in the mood for?</span><div class="chips" style="margin:.4rem 0 .9rem">${IDEA_INTENTS.map(t=>`<button class="chip ${ideaIntent===t?'on':''}" data-a="iintent" data-v="${t}">${t}</button>`).join('')}</div>
+ <p style="margin:0"><button class="btn" data-a="igen">${ideas.length?'Regenerate ideas':'Generate 5 ideas'}</button>${ideas.length?' <button class="btn alt" data-a="iclear">Clear</button>':''}</p>
+ <p class="small mut" style="margin:.6rem 0 0">${thin?'No measured results yet — ideas will be hypothesis-driven from your onboarding answers.':`Built from ${done().length} measured experiments, your learnings and your unknowns.`} Existing experiments are excluded automatically.</p></div>`;
+ if(ideaBusy)h+=`<div class="paper" style="max-width:38rem"><h3>Writing five ideas from your evidence…</h3><div class="bar febar" style="margin-top:1rem"><i style="width:70%"></i></div><div style="margin-top:1.1rem"><div class="step" style="animation:u .45s both">Reading your measured experiments</div><div class="step" style="animation:u .45s both;animation-delay:.4s">Excluding what you have already made</div><div class="step" style="animation:u .45s both;animation-delay:.8s">Writing hypotheses, not predictions</div></div></div>`;
+ else if(ideas.length){h+=`<div class="hl idea-note" style="max-width:46rem"><b>${ideaNote}</b><p class="small mut" style="margin:.35rem 0 0">Ideas are hypotheses, not predictions — no guarantee of reach, followers or income.${thin?' Every idea is labelled hypothesis-driven because you have no measured results yet.':''}${ideaDrop?` ${ideaDrop} idea${ideaDrop>1?'s':''} removed for repeating your existing work.`:''}</p></div>`;
+ h+=ideas.map((it,i)=>ideaCard(it,i,thin)).join('')}
+ else h+=`<div class="hl" style="max-width:40rem"><h3>No ideas yet</h3><p>Pick a direction above and generate five. Every idea is checked against your existing experiments before it appears.</p></div>`;
+ return h+'</div>'}
+let firstExp=null,firstBusy=false,firstErr=false,firstSrc=null;
+const firstCtx=()=>{const c=S.creator;return{creator:{name:c.name||'',niche:c.niche||'',audience:c.audience||'',platform:c.platform||'',stage:c.stage||'Just starting',goal:c.goal||''},experiments:S.exps.map(e=>({title:e.title||'',format:e.format||'',hook:e.hook||'',hypothesis:e.hyp||'',variable:e.variable||'',views:e.views||0,saves:e.saves||0,shares:e.shares||0,status:e.status||''}))}};
+const mapFirst=d=>({title:d.title,hyp:d.hypothesis,hook:d.hook,format:d.format,aud:d.targetAudience||S.creator.audience||'',goal:d.goal||S.creator.goal||'',variable:d.variableTested,evidence:[].concat(d.evidence||[]),conf:Number(d.confidence)||0,unk:[].concat(d.unknowns||[]),effort:d.estimatedEffort||''});
+function templateFirst(){const c=S.creator,niche=c.niche||'your niche',aud=c.audience||'your target audience',plat=c.platform||'Instagram',goal=c.goal||'your first goal';return{title:`${niche} starter test on ${plat}: one hook, one variable`,hyp:`We don't know what your audience responds to yet, so this first test changes only the opening hook. Topic, format and audience stay fixed so the result can tell us something.`,hook:`Outcome first: show the result in the first two seconds, then explain how you got there — compare with a question-first opening on your next post.`,format:`${plat} Reel · 20–30 sec`,aud:aud,goal:goal,variable:'Opening hook style (outcome-first vs question-first)',evidence:['No personal performance data yet — this is a starting template, not AI-generated.','Baseline first: keep everything constant except the hook, so we can attribute the result.'],conf:30,unk:[`How ${aud} on ${plat} respond to each hook style.`,`Whether ${niche} content earns saves or scrolls past.`],effort:'About 1–2 hours'}}
+function startFirst(){if(!S.me){toast('Please log in to build your first experiment.');return}if(firstBusy||firstExp)return;firstErr=false;firstBusy=true;render();withAI('next-experiment',{},null,d=>{firstExp=mapFirst(d);firstSrc='ai';firstBusy=false},()=>{firstExp=templateFirst();firstSrc='template';firstBusy=false;firstErr=false},{quiet:true,ctx:firstCtx(),onFail:()=>{firstBusy=false;firstErr=true}})}
+function createFirst(){const n=firstExp;if(!n)return;const e={id:Date.now(),title:n.title,topic:S.creator.niche||'',sub:'',aud:n.aud||'',format:n.format||'',hook:n.hook||'',hyp:n.hyp||'',variable:n.variable||'',goal:n.goal||'',views:0,likes:0,comments:0,saves:0,shares:0,gained:0,date:new Date().toISOString().slice(0,10),status:'Idea',an:null};S.exps.push(e);firstExp=null;firstBusy=false;firstErr=false;firstSrc=null;S.modal=null;go('exp');render();saveNewExperiment(e)}
+V.first=()=>{const c=S.creator;
+if(firstBusy)return`<div class="wrap" style="max-width:760px">
+<span class="pchip">Designing your first experiment</span>
+<h1 style="font-size:clamp(1.9rem,5vw,3rem);margin:.9rem 0 .5rem">Building your first experiment…</h1>
+<p class="mut" style="max-width:36rem;font-size:1.08rem">Using your niche, audience and goal to design a useful first test.</p>
+<div class="bar febar" style="margin-top:1.7rem;max-width:36rem"><i style="width:70%"></i></div>
+<div style="margin-top:1.5rem;max-width:36rem">
+<div class="step" style="animation:u .45s both">Reading your onboarding answers</div>
+<div class="step" style="animation:u .45s both;animation-delay:.4s">Choosing one meaningful variable</div>
+<div class="step" style="animation:u .45s both;animation-delay:.8s">Writing a starting hypothesis — not a prediction</div></div>
+<p class="small mut" style="margin-top:1.4rem">We don't know what your audience responds to yet — and we won't invent results we don't have.</p></div>`;
+if(firstErr)return`<div class="wrap" style="max-width:740px">
+<span class="pchip" style="background:#F7D0C6">Growth intelligence unavailable</span>
+<h1 style="font-size:clamp(1.8rem,5vw,2.7rem);margin:.9rem 0 .5rem">We couldn't design your first experiment right now.</h1>
+<p class="mut" style="max-width:38rem">Nothing has been generated yet. Try again, or start from a simple starting template built from your onboarding answers — the template is not AI-generated.</p>
+<p style="margin-top:1.5rem"><button class="btn" data-a="firstretry">Try again</button> <button class="btn alt" data-a="firsttmpl">Start from template</button></p></div>`;
+if(!firstExp)return`<div class="wrap" style="max-width:780px">
+<span class="pchip">Your first experiment</span>
+<h1 style="font-size:clamp(2.1rem,6vw,3.5rem);margin:.9rem 0 .6rem">We don't know what your audience responds to yet.</h1>
+<p class="mut" style="font-size:1.1rem;max-width:34rem">That's okay. Your first experiment is designed to help us find out.</p>
+<div class="hl" style="margin-top:1.7rem;max-width:44rem"><b>A learning hypothesis, not a prediction.</b><p>Creator Lab will use your ${c.niche||'niche'}, ${c.audience||'audience'} and ${c.goal||'goal'} on ${c.platform||'your platform'} to design one focused first test — then we learn from the real result.</p></div>
+<p style="margin-top:1.8rem"><button class="btn" data-a="firststart">Build my first experiment →</button> <a class="btn alt" href="#exp" style="text-decoration:none;display:inline-block">Go to experiments</a></p></div>`;
+const n=firstExp,ai=firstSrc==='ai',measured=S.exps.filter(e=>e.views);
+const obs=measured.length?measured.map(e=>`${e.title} — ${f(e.views)} views, ${e.saves} saves, +${e.gained} followers. Measured by you.`):[`We don't have enough personal performance data yet. This is a starting hypothesis — we'll learn from the result.`];
+return`<div class="wrap" style="max-width:860px">
+<div class="row" style="border:0;padding:0"><span class="pchip"${ai?'':' style="background:var(--soft)"'}>${ai?'Designed with growth intelligence':'Starting template · not AI-generated'}</span><a href="#exp" class="small mut">Your experiments →</a></div>
+<h1 class="rev" style="font-size:clamp(2rem,5.5vw,3.2rem);margin:.8rem 0 .5rem">${n.title}</h1>
+<p class="mut">Your first experiment · one variable at a time · a baseline before optimization</p>
+<div class="paper rev" style="animation-delay:.15s;margin-top:1.5rem">
+<p><b>Hypothesis.</b> ${n.hyp}</p>
+<p><b>Hook.</b> “${n.hook}”</p>
+<p><b>Format.</b> ${n.format}</p></div>
+<div class="selrow rev" style="animation-delay:.25s">
+<div><span class="flab">Target audience</span><p>${n.aud||c.audience}</p></div>
+<div><span class="flab">Goal</span><p>${n.goal||c.goal}</p></div>
+<div><span class="flab">Variable tested</span><p>${n.variable}</p></div>
+${n.effort?`<div><span class="flab">Estimated effort</span><p>${n.effort}</p></div>`:''}</div>
+<div class="evid">
+<div class="box obs rev"><b>Observed facts</b>${obs.map(t=>`<p style="margin:.35rem 0">${t}</p>`).join('')}</div>
+<div class="box lik rev" style="animation-delay:.1s"><b>Likely hypothesis · why this test</b>${[].concat(n.evidence).map(t=>`<p style="margin:.35rem 0">${t}</p>`).join('')}</div>
+<div class="box unk rev" style="animation-delay:.2s"><b>Unknown</b>${[].concat(n.unk).map(t=>`<p style="margin:.35rem 0">${t}</p>`).join('')}</div>
+<div class="box nxt rev" style="animation-delay:.3s"><b>Confidence</b><p style="margin:.35rem 0"><span style="font-family:'Young Serif';font-size:1.7rem;color:var(--pri)">${n.conf}%</span> — how well this test fits your inputs, not a prediction of results.</p></div></div>
+<p class="small mut" style="margin-top:1.2rem">${ai?'Designed by growth intelligence from your onboarding answers. Results remain uncertain.':'Built from your onboarding answers as a starting template — not AI-generated.'}</p>
+<p style="margin-top:1.4rem"><button class="btn" data-a="firstcreate">Create this experiment</button> <button class="btn alt" data-a="newexp">New experiment manually</button></p>
+<p class="small mut">Saved to your Experiments with all metrics at zero and status “Idea”. Record real results when it's published.</p></div>`};
+document.addEventListener('click',ev=>{const a=ev.target.closest('[data-a]')?.dataset.a;if(a=='retryai')window._ai.retry();if(a=='demoai'){S.modal=null;window._ai.demo();render()}});
+function render(){document.documentElement.dataset.t=S.theme;const r=route(),a=$('#app');let h;
+if(!S.me){h=V.landing()}else if(needStart()){h=onbView()}else if(S.ob<5&&S.obOn){h=V.onb()}else if(r[0]=='creator'){h=V.pub()}else{h=`<nav class="top"><b>Creator Lab</b>${NAV.map(n=>`<a href="#${n[0]}" class="${r[0]==n[0]?'on':''}">${n[1]}</a>`).join('')}</nav>`+(V[r[0]]?V[r[0]](r[1]):V.home())}
+const keep=$('#q')?.value;a.innerHTML=h+(S.modal||'');if(keep&&$('#q'))$('#q').value=keep;if(S.me&&needStart())saveOnbDraft();save()}
+function results(id){const e=S.exps.find(z=>z.id==id);S.modal=`<div class="modal"><div><h3>Performance results</h3>${[['views','Views'],['likes','Likes'],['comments','Comments'],['saves','Saves'],['shares','Shares'],['gained','Followers gained']].map(k=>`<label>${k[1]}</label><input type="number" min="0" id="r_${k[0]}" value="${e[k[0]]||''}">`).join('')}<button class="btn" data-a="saveres" data-id="${id}">Save results</button> <button class="btn alt" data-a="close">Cancel</button></div></div>`;render()}
+function newexp(pre){const p=pre||{};S.modal=`<div class="modal"><div><h3>New experiment</h3>${[['title','Content title'],['topic','Topic'],['sub','Subtopic'],['aud','Target audience'],['format','Format'],['hook','Hook'],['hyp','Hypothesis'],['variable','Variable being tested']].map(k=>`<label>${k[1]}</label><input id="x_${k[0]}" value="${(p[k[0]]||(k[0]=='aud'?S.creator.audience:k[0]=='format'?'Reel':'')).replace(/"/g,'&quot;')}">`).join('')}<button class="btn" data-a="savexp">Save experiment</button> <button class="btn alt" data-a="close">Cancel</button></div></div>`;render()}
+function progress(steps,fin){let i=0;const draw=()=>{S.modal=`<div class="modal"><div><h3>Building your Creator Report</h3>${steps.map((t,j)=>`<div class="step ${j<i?'done':''}">${j<i?'✓':'○'} ${t}</div>`).join('')}<div class="bar"><i style="width:${100*i/steps.length}%"></i></div></div></div>`;render()};draw();const t=setInterval(()=>{i++;draw();if(i>=steps.length){clearInterval(t);fin()}},650)}
+function report(){const s=stats(),d=done(),c=S.creator,L=learnings();const t=d.reduce((a,e)=>({v:a.v+e.views,s:a.s+e.saves,sh:a.sh+e.shares,g:a.g+e.gained}),{v:0,s:0,sh:0,g:0});S.modal=`<div class="modal"><div class="paper"><h2>Creator Report: ${c.name}</h2><p class="mut">${c.niche} · ${c.platform} · ${c.audience} · Goal: ${c.goal}</p><p><b>${d.length}</b> experiments · <b>${f(t.v)}</b> views · <b>${t.s}</b> saves · <b>${t.sh}</b> shares · <b>+${t.g}</b> followers</p><h3>Top content</h3><p>${s.best.title}: ${f(s.best.views)} views, ${s.best.saves} saves.</p><h3>What worked</h3><ul>${L.know.map(x=>`<li>${x}</li>`).join('')}</ul><h3>What underperformed</h3><p>${[...d].sort((a,b)=>a.saves/a.views-b.saves/b.views)[0].title} had the lowest save rate. That makes it a baseline, not a failure — hook and topic are still untested.</p><h3>Unknowns</h3><ul>${L.unk.map(x=>`<li>${x}</li>`).join('')}</ul><h3>Recommended next</h3><p>${nextExp().title} — ${nextExp().variable}.</p><h3>Monetization readiness</h3><p>Evidence: ${s.best?`${s.best.topic}, ${s.best.format}`:'no measured results yet'}. Missing: a measured campaign and collaboration results. No income is implied.</p><button class="btn" data-a="dl">Download report</button> <button class="btn alt" data-a="close">Close</button></div></div>`;toast('Your Creator Report is ready.');render()}
+let authBusy=false;
+async function authFlow(a){if(authBusy)return;authBusy=true;const E=t=>{const el=$('#err');if(el)el.textContent=t};
+try{
+const e=$('#e').value.trim().toLowerCase(),p=$('#p').value;
+if(!/\S+@\S+\.\S+/.test(e)||p.length<6){E('Enter a valid email and a password of at least 6 characters.');return}
+let n='';if(a=='signup'){n=$('#n').value.trim();if(!n){E('Add your name.');return}}
+if(!supa){E('Sign-in is unavailable right now. Please try again later.');return}
+if(a=='signup'){
+const {data,error}=await supa.auth.signUp({email:e,password:p,options:{data:{display_name:n}}});
+if(error){E(error.code==='user_already_exists'||/already/i.test(error.message||'')?'That email already has an account. Log in instead.':error.message||'We could not create your account.');return}
+if(!data.session){S.modal=null;render();toast('Account created. Confirm your email, then log in.');return}
+await ensureUser(data.user);
+if(n)S.creator.name=n;
+save();
+}else{
+const {data,error}=await supa.auth.signInWithPassword({email:e,password:p});
+if(error){E(/invalid login credentials/i.test(error.message||'')?'Email or password is incorrect.':error.message||'We could not log you in.');return}
+await ensureUser(data.user);
+}
+S.modal=null;go('home');render();
+}catch(err){console.error('Authentication failed:',err);E('Something went wrong. Please try again.')}
+finally{authBusy=false}}
+async function saveProfile(){return upsertProfile(profileSnapshot())}
+document.addEventListener('click',ev=>{const b=ev.target.closest('[data-a]');if(!b)return;const a=b.dataset.a,id=+b.dataset.id,D=b.dataset,v=s=>$(s)?.value;
+if(a=='auth'){S.modal=V.auth(D.m);render()}
+else if(a=='close'){S.modal=null;render()}
+else if(a=='signup'||a=='login'){authFlow(a)}
+else if(a=='ob'){S.obd[D.k]=D.v;render()}
+else if(a=='obn'){const k=OB[S.ob][1];if(k=='audience'&&$('#cu')?.value)S.obd.audience=$('#cu').value;if($('#oth')){const t=($('#oth').value||'').trim();if(!t){toast('Type your own answer to continue.');return}S.obd[k]=t}Object.assign(S.creator,S.obd);ensurePrototypeData();S.ob++;if(S.ob>4){S.ob=5;S.obOn=0;const userId=S.me;saveProfile().then(ok=>{if(ok&&S.me===userId){S.onbDone=true;clearOnbDraft(userId);save();render()}});toast('Your first experiment starts here.')}render()}
+else if(a=='out'){exitUser();go('home');render();if(supa)supa.auth.signOut().catch(e=>console.error('Sign out failed:',e))}
+else if(a=='theme'){S.theme=D.v;render()}
+ else if(a=='runnext'||a=='gen'){if(!nextExp()){toast('Add results to an experiment first.');return}nextGen(null)}
+ else if(a=='iintent'){ideaIntent=D.v;render()}
+ else if(a=='igen'){genIdeas()}
+ else if(a=='iclear'){ideas=[];ideaDrop=0;ideaNote='';ideaSrc=null;render()}
+ else if(a=='ideaexp'){const i=+D.i,it=ideas[i];if(!it)return;ideas.splice(i,1);newexp({title:it.title,topic:S.creator.niche||'',sub:'',aud:S.creator.audience||'',format:it.format||'Reel',hook:it.hook||'',hyp:it.whyFit||'',variable:it.tests||''});toast('Idea moved into your experiment form.')}
+else if(a=='acceptnext'){const n=window._n||nextExp();S.exps.push({id:Date.now(),title:n.title,topic:n.title.includes(':')?n.title.split(':')[0]:(S.creator.niche||''),sub:'',aud:n.aud,format:n.format,hook:n.hook,hyp:n.hyp,variable:n.variable,goal:n.goal,views:0,likes:0,comments:0,saves:0,shares:0,gained:0,date:new Date().toISOString().slice(0,10),status:'Idea',an:null});S.modal=null;go('exp');render();toast('Experiment saved. Your next learning loop starts here.')}
+else if(a=='newexp')newexp();
+else if(a=='firststart'||a=='firstretry')startFirst();
+else if(a=='firsttmpl'){firstExp=templateFirst();firstSrc='template';firstBusy=false;firstErr=false;render()}
+else if(a=='firstcreate')createFirst();
+else if(a=='savexp'){const e={id:Date.now(),views:0,likes:0,comments:0,saves:0,shares:0,gained:0,date:new Date().toISOString().slice(0,10),status:'Idea',an:null,goal:S.creator.goal};['title','topic','sub','aud','format','hook','hyp','variable'].forEach(k=>e[k]=v('#x_'+k).trim());if(!e.title){toast('Add a title first.');return}S.exps.push(e);S.modal=null;render();saveNewExperiment(e)}
+else if(a=='results')results(id);
+else if(a=='saveres'){const e=S.exps.find(z=>z.id==id);['views','likes','comments','saves','shares','gained'].forEach(k=>e[k]=+v('#r_'+k)||0);e.status=e.views?'Learned':e.status;e.an=null;S.modal=null;render();saveExperimentResults(e)}
+else if(a=='adv'){const e=S.exps.find(z=>z.id==id);e.status=ST[Math.min(ST.indexOf(e.status)+1,3)];render()}
+else if(a=='analyze'){const e=S.exps.find(z=>z.id==id);withAI('analyze-performance',{current:e},null,d=>{e.an={observed:[].concat(d.observed),likely:[].concat(d.likely),unknown:[].concat(d.unknown),next:d.nextTest,conf:d.confidence,real:1};saveExperimentAnalysis(e)},()=>{e.an=analyze(e)})}
+else if(a=='propose'){const c=S.collabs.find(z=>z.id==id);c.status='Proposed';render();toast('Collaboration request sent.')}
+else if(a=='cadv'){const c=S.collabs.find(z=>z.id==id),L=['Proposed','Accepted','Planning','Creating','Published','Measuring','Learned'];c.status=L[Math.min(L.indexOf(c.status)+1,6)];render()}
+else if(a=='cdec'){S.collabs.find(z=>z.id==id).status=null;render();toast('Declined. You can propose again or pick another creator.')}
+else if(a=='proofnew'){S.modal=`<div class="modal"><div><h3>Create proof</h3><label>Which experiment?</label><select id="pe">${done().map(e=>`<option value="${e.id}">${e.title}</option>`).join('')}</select><button class="btn" data-a="proofsave">Create proof</button> <button class="btn alt" data-a="close">Cancel</button></div></div>`;render()}
+else if(a=='proofsave'){const e=S.exps.find(z=>z.id==v('#pe'));S.proofs.push({eid:e.id,learn:e.an?e.an.unknown[0]:`Measured results show ${e.saves} saves and +${e.gained} followers; the cause of this result isn't isolated yet.`});S.modal=null;render();toast('Your proof is ready to share.')}
+else if(a=='report')progress(['Gathering your experiments','Analyzing performance','Finding your strongest patterns','Reviewing collaboration evidence','Preparing monetization insights','Building your Creator Report'],report);
+else if(a=='dl'){const t='<!doctype html><meta charset=utf-8><title>Creator Report</title><style>body{font:16px/1.6 Georgia,serif;max-width:720px;margin:2rem auto;padding:0 1rem;color:#2B2522;background:#FBF3E6}h2,h3{color:#B8325A;font-weight:400}button{display:none}@media print{body{background:#fff}}</style>'+$('.modal .paper').innerHTML,u=URL.createObjectURL(new Blob([t],{type:'text/html'})),l=document.createElement('a');l.href=u;l.download='creator-report.html';l.click();toast('Open the file and print to save as PDF.')}
+else if(a=='share'){go('creator/proof')}else if(a=='share_old'){const c=S.creator,s=stats();S.modal=`<div class="modal"><div class="paper"><h2>${c.name} · Public proof</h2><p>${c.niche} · ${c.platform} · ${c.audience}</p><p>Strongest: ${s.best.title}: ${f(s.best.views)} views, ${s.best.saves} saves, +${s.best.gained} followers.</p><p class="mut">Private data (email, drafts) is not included.</p><button class="btn" data-a="copy">Copy proof text</button> <button class="btn alt" data-a="close">Close</button></div></div>`;render()}
+else if(a=='copy'){navigator.clipboard?.writeText($('.modal .paper').innerText).catch(()=>{});toast('Copied.')}
+else if(a=='pitch'){const o=S.opps.find(z=>z.id==id),show=t=>{S.modal=`<div class="modal" role="dialog"><div><h3>Your pitch is ready.</h3><label for="pt">Pitch</label><textarea id="pt" rows="14">${t}</textarea><button class="btn" data-a="copyp">Copy</button> <button class="btn alt" data-a="close">Close</button></div></div>`};withAI('generate-pitch',{opportunity:o},null,d=>show([d.opening,d.creatorFit,d.evidence,d.contribution,d.closing].join('\n\n')),()=>show(pitch(o)))}
+else if(a=='copyp'){navigator.clipboard?.writeText($('.modal textarea').value).catch(()=>{});toast('Copied.')}
+else if(a=='apply'){S.opps.find(z=>z.id==id).stat='Applied';render();toast('Application sent. Track it here.')}
+else if(a=='oadv'){const o=S.opps.find(z=>z.id==id),L=['Applied','Negotiating','Accepted','Creating','Submitted','Published','Measured','Completed'];const nx=L[Math.min(L.indexOf(o.stat)+1,7)];if(nx=='Completed'){resModal('camp',id);return}o.stat=nx;render()}
+else if(a=='ask'||a=='askin'){const q=a=='ask'?D.q:v('#q');if(!q?.trim())return;chat.push({r:'u',t:q});withAI('coach',{},q,d=>chat.push({r:'c',t:d.answer}),()=>chat.push({r:'c',t:coach(q)}))}});
+addEventListener('hashchange',render);render();initSupabase();
+</script></body></html>
